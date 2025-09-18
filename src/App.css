@@ -1,0 +1,146 @@
+.empty-list {
+  list-style-type: none;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  padding-inline-start: 0px;
+  unicode-bidi: isolate;
+}
+
+.preview-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.captioned-image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  min-width: 0px; */
+}
+
+.float-left {
+  float: left;
+  margin-right: 1rem;
+}
+
+.float-right {
+  float: right;
+  margin-left: 1rem;
+}
+
+.bordered-container {
+  border: 1px solid white;
+  padding: 0.5em;
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+
+.tab-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0;
+  z-index: 2;
+  width: 95%;
+}
+
+.tab {
+  position: relative;
+  color: #646cff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em 1em;
+  border: 3px solid #f9f9f9;
+  background-color: #f9f9f9;
+  margin-inline: 0.2em;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  width: 100%;
+  border-bottom: none;
+
+  margin-block: 0;
+  line-height: normal;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.tab::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background-color: #26284d;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.5s ease;
+}
+
+.tab.active::before {
+  transform: scaleY(1);
+}
+
+.tab span {
+  position: relative;
+  z-index: 1;
+}
+
+.content {
+  width: -webkit-fill-available;
+  background-color: #26284d;
+  border: 3px solid #f9f9f9;
+  border-top: none;
+  overflow: overlay;
+  z-index: 1;
+  padding: 1rem;
+}
+
+.border-top {
+  position: absolute;
+  border-top: 3px solid #f9f9f9;
+  width: 100%;
+}
+
+.project-link {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: 1em;
+  /* padding-inline: 1em; */
+
+  width: 100%;
+  background: radial-gradient(circle,
+      rgb(29, 30, 48) 0%,
+      transparent 95%
+    );
+}
+
+.back-to-top {
+  padding: 0.5rem;
+  border-radius: 4px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  background: radial-gradient(circle,
+      rgb(29, 30, 48) 0%,
+      transparent 95%);
+}
+
+.hidden {
+  display: none;
+}
