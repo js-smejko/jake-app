@@ -2,22 +2,37 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 interface CarouselProps {
   children: React.ReactNode[];
+  maxHeight?: number;
 }
 
-const Carousel = ({ children }: CarouselProps) => {
+function circularSlice<T>(arr: T[], start: number, length: number): T[] {
+  const result: T[] = [];
+  const n = arr.length;
+
+  let normalizedStart = ((start % n) + n) % n;
+
+  for (let i = 0; i < length; i++) {
+    result.push(arr[(normalizedStart + i) % n]);
+  }
+
+  return result;
+}
+
+const Carousel = ({ children, maxHeight }: CarouselProps) => {
   const [{ top, left, width }, setRelativeRect] = useState<DOMRect>(new DOMRect());
   const [height, setHeight] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [startX, setStartX] = useState(0);
   const [translateX, setTranslateX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [isTransitionEnabled, setIsTransitionEnabled] = useState(false);
 
   const relativeRef = useRef<HTMLDivElement>(null);
   const absoluteRef = useRef<HTMLDivElement>(null);
 
   const keyedChildren = useMemo(() =>
     children.map((child, index) => ({ child, key: index })
-  ), [children]);
+    ), [children]);
 
   const slideWidth = useMemo(() => (
     width + 16
@@ -37,7 +52,10 @@ const Carousel = ({ children }: CarouselProps) => {
     const absoluteRO = new ResizeObserver((entries) => {
       for (const entry of entries) {
         if (entry.contentRect.height) {
-          setHeight(entry.contentRect.height);
+          setHeight(prev => entry.contentRect.height <= (maxHeight ?? 1000) 
+            ? Math.max(prev, entry.contentRect.height)
+            : prev
+          );
         }
       }
     });
@@ -51,67 +69,58 @@ const Carousel = ({ children }: CarouselProps) => {
     };
   }, []);
 
-  useEffect(() => {
-    setTranslateX(-currentIndex * slideWidth);
-  }, [currentIndex, slideWidth]);
-
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleDragStart = (clientX: number) => {
     setIsDragging(true);
-    setStartX(e.clientX);
-  };
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true);
-    setStartX(e.touches[0].clientX);
+    setStartX(clientX);
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleDragMove = (clientX: number) => {
     if (!isDragging) return;
-    const delta = e.clientX - startX;
-    setTranslateX(-currentIndex * slideWidth + delta);
+    const delta = clientX - startX;
+    setTranslateX(-slideWidth + delta);
   };
+
+  const handleDragEnd = (clientX: number) => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    setIsTransitionEnabled(true);
+
+    const delta = clientX - startX;
+    if (delta > 0.5 * slideWidth) {
+      setTranslateX(0);
+    } else if (delta < -0.5 * slideWidth) {
+      setTranslateX(-2 * slideWidth);
+    } else {
+      setTranslateX(-slideWidth);
+    }
+  };
+
+  const handleTransitionEnd = () => {
+    setIsTransitionEnabled(false);
+    setCurrentIndex(
+      translateX === 0
+        ? (currentIndex - 1 + keyedChildren.length) % keyedChildren.length
+        : translateX === -slideWidth * 2
+          ? (currentIndex + 1) % keyedChildren.length
+          : currentIndex
+    );
+    setTranslateX(-slideWidth);
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => handleDragStart(e.clientX);
+  const handleMouseMove = (e: React.MouseEvent) => handleDragMove(e.clientX);
+  const handleMouseUp = (e: React.MouseEvent) => handleDragEnd(e.clientX);
+
+  const handleTouchStart = (e: React.TouchEvent) => handleDragStart(e.touches[0].clientX);
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging) return;
-    const delta = e.touches[0].clientX - startX;
+    const clientX = e.touches[0].clientX;
+    const delta = clientX - startX;
     if (Math.abs(delta) > 10) {
-      setTranslateX(-currentIndex * slideWidth + delta);
+      handleDragMove(clientX);
       e.preventDefault();
     }
   };
-
-  const handleMouseUp = (e: React.MouseEvent) => {
-    if (!isDragging) return;
-    setIsDragging(false);
-
-    const delta = e.clientX - startX;
-    if (delta > 0.5 * slideWidth && currentIndex > 0) {
-      setCurrentIndex(prev => {
-        return prev - 1;
-      });
-    } else if (delta < -0.5 * slideWidth && currentIndex < children.length - 1) {
-      setCurrentIndex(prev => {
-        return prev + 1;
-      });
-    } else {
-      setTranslateX(-currentIndex * slideWidth);
-    }
-  };
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (!isDragging) return;
-    setIsDragging(false);
-
-    const delta = e.changedTouches[0].clientX - startX;
-    if (delta > 0.5 * slideWidth && currentIndex > 0) {
-      setCurrentIndex(prev => {
-        return prev - 1;
-      });
-    } else if (delta < -0.5 * slideWidth && currentIndex < children.length - 1) {
-      setCurrentIndex(prev => {
-        return prev + 1;
-      });
-    } else {
-      setTranslateX(-currentIndex * slideWidth);
-    }
-  };
+  const handleTouchEnd = (e: React.TouchEvent) => handleDragEnd(e.changedTouches[0].clientX);
 
   return (
     <div
@@ -128,23 +137,32 @@ const Carousel = ({ children }: CarouselProps) => {
           position: "absolute",
           top, left,
           transform: `translateX(${translateX}px)`,
-          transition: isDragging ? "none" : "transform 0.3s ease",
+          transition: isTransitionEnabled ? "transform 0.3s ease" : "none",
           gap: "16px",
         }}
+        onTransitionEnd={handleTransitionEnd}
       >
-        {keyedChildren.map(({ child, key }) => (
-          <div 
-            key={key} 
-            style={{ 
+        {circularSlice(
+          keyedChildren, 
+          currentIndex - 1, 3
+        ).map(({ child, key }) => (
+          <div
+            key={key}
+            style={{
               width,
-              userSelect: "none"
+              userSelect: "none",
+              display: "flex",
+              height,
+              flexDirection: "column",
+              justifyContent: "space-between",
             }}
           >
             {child}
+            <h2>{key + 1}</h2>
           </div>
         ))}
       </div>
-      <div 
+      <div
         style={{
           position: "absolute",
           top, left, width, height,
