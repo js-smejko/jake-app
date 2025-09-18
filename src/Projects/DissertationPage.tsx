@@ -1,3 +1,4 @@
+import Demo from "../components/Demo";
 import SupplementaryMaterialTabs from "../components/SupplementaryMaterialTabs";
 import { MAIN_NAVIGATION_PARAMS } from "../constants";
 
@@ -30,7 +31,8 @@ const DissertationPage = () => {
         This project aims to facilitate this by creating a system to record and catalogue the fish's behaviour.
       </p>
       <h3>Supplementary Material</h3>
-      <SupplementaryMaterialTabs />
+      <Demo />
+      {/* <SupplementaryMaterialTabs /> */}
       <h3>
         Dissertation
         <a

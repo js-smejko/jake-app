@@ -30,6 +30,8 @@ const MainNavigationDropdown = (
   const handleTouch = () => {
     if (isHovered) {
       setShouldClose(true);
+    } else {
+      setIsHovered(true);
     }
   }
 
