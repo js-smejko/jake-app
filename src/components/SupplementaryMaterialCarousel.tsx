@@ -5,7 +5,14 @@ import FloatImage from "./FloatImage"
 
 const SupplementaryMaterialCarousel = () => {
   return (
-    <Carousel>
+    <Carousel
+      style={{
+        padding: "1em",
+        backgroundColor: window.screen.width >= 600 ? "#383a5a" : "#26284d",
+        borderRadius: "8px",
+      }}
+      gap={32}
+    >
       <div>
         <p>
           To learn about DC's behaviour, surveillance of them had to be continuous, however,

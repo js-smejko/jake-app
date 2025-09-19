@@ -31,7 +31,6 @@ const DissertationPage = () => {
       </p>
       <h3>Supplementary Material</h3>
       <SupplementaryMaterialCarousel />
-      {/* <SupplementaryMaterialTabs /> */}
       <h3>
         Dissertation
         <a

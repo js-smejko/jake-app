@@ -24,7 +24,7 @@ const ProjectsLayoutPage = () => {
         tabRenderer={(tab) => (
           <NavLink
             className={classFn} 
-            to={tabs.find(({ title }) => title === tab)?.link}
+            to={tabs.find(({ title }) => title === tab)!.link}
           >
             <span>{tab}</span>
           </NavLink>

@@ -83,9 +83,9 @@ const CaptionedImageRow = ({ images, caption, maxHeight }: CaptionedImageProps) 
             <img
               src={img.src}
               alt={img.alt ?? ""}
-              loading="lazy"
-              decoding="async"
-              draggable={false}
+              // loading="lazy"
+              // decoding="async"
+              // draggable={false}
               style={{
                 width: "100%",              // fills flexed width
                 height: "auto",

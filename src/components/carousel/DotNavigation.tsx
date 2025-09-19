@@ -33,14 +33,15 @@ const DotNavigation = ({ numDots, currentIndex, onChange: setCurrentIndex }: Dot
       style={{
         display: "flex",
         justifyContent: "center",
-        userSelect: "none",
+        // userSelect: "none",
       }}
       >
       <div 
         style={{ 
           display: "flex", 
           alignItems: "center",
-          paddingBlock: 16
+          paddingBlock: 16,
+          // userSelect: "none",
         }}
         ref={dotsRef}
         onMouseDown={handleDragStart}
@@ -64,9 +65,9 @@ const DotNavigation = ({ numDots, currentIndex, onChange: setCurrentIndex }: Dot
               backgroundColor: i === currentIndex ? "#ccc" : "#808080ff",
               margin: 4,
               transition: "background-color 0.3s ease",
-              userSelect: "none",
+              // userSelect: "none",
             }}
-            onClick={() => setCurrentIndex(i)}
+            // onClick={() => setCurrentIndex(i)}
           />
         )}
       </div>

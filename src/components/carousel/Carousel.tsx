@@ -4,6 +4,7 @@ import classes from "./Carousel.module.css";
 
 interface CarouselProps {
   children: React.ReactNode[];
+  style?: React.CSSProperties;
   maxHeight?: number;
   gap?: number;
 }
@@ -21,7 +22,7 @@ function circularSlice<T>(arr: T[], start: number, length: number): T[] {
   return result;
 }
 
-const Carousel = ({ children, maxHeight = 2000, gap = 16 }: CarouselProps) => {
+const Carousel = ({ children, style, maxHeight = 2000, gap = 16 }: CarouselProps) => {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -91,9 +92,9 @@ const Carousel = ({ children, maxHeight = 2000, gap = 16 }: CarouselProps) => {
     setIsTransitionEnabled(true);
 
     const delta = clientX - startX;
-    if (delta > 0.5 * slideWidth) {
+    if (delta > 0.1 * slideWidth) {
       setTranslateX(0);
-    } else if (delta < -0.5 * slideWidth) {
+    } else if (delta < -0.1 * slideWidth) {
       setTranslateX(-2 * slideWidth);
     } else {
       setTranslateX(-slideWidth);
@@ -128,7 +129,12 @@ const Carousel = ({ children, maxHeight = 2000, gap = 16 }: CarouselProps) => {
   const handleTouchEnd = (e: React.TouchEvent) => handleDragEnd(e.changedTouches[0].clientX);
 
   return (
-    <div>
+    <div 
+      style={{
+        overflow: "hidden",
+        ...style
+      }}
+    >
       <div
         ref={relativeRef}
         style={{
@@ -143,7 +149,7 @@ const Carousel = ({ children, maxHeight = 2000, gap = 16 }: CarouselProps) => {
             position: "absolute",
             transform: `translateX(${translateX}px)`,
             transition: isTransitionEnabled ? "transform 0.3s ease" : "none",
-            gap
+            gap,
           }}
           onTransitionEnd={handleTransitionEnd}
         >
