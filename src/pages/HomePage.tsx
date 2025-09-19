@@ -1,5 +1,6 @@
 import BlockFloatContent from "../components/BlockFloatContent";
 import FloatImage from "../components/FloatImage";
+import HighlightsCarousel from "../components/HighlightsCarousel";
 import HighlightsTabs from "../components/HighlightsTabs";
 import { Link } from "react-router-dom";
 
@@ -34,7 +35,7 @@ const HomePage = () => {
         </p>
       </BlockFloatContent>
       <h3><Link to="projects">Project</Link> Highlight Videos</h3>
-      <HighlightsTabs />
+      <HighlightsCarousel />
     </div>
   );
 };

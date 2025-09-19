@@ -2,17 +2,17 @@ import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import RootLayoutPage from './pages/RootLayoutPage';
 import CVPage from './pages/CVPage';
-import ProjectsLayoutPage from './Projects/ProjectsLayoutPage';
-import AutonomousVehiclePage from './Projects/AutonomousVehiclePage';
-import CADSoftwarePage from './Projects/CADSoftwarePage';
-import PulseOximeterPage from './Projects/PulseOximeterPage';
+import ProjectsLayoutPage from './projects/ProjectsLayoutPage';
+import AutonomousVehiclePage from './projects/AutonomousVehiclePage';
+import CADSoftwarePage from './projects/CADSoftwarePage';
+import PulseOximeterPage from './projects/PulseOximeterPage';
 import HomePage from './pages/HomePage';
-import DissertationPage from './Projects/DissertationPage';
-import KroyairPage from './Projects/KroyairPage';
+import DissertationPage from './projects/DissertationPage';
+import KroyairPage from './projects/KroyairPage';
 import DocumentsLayoutPage from './pages/DocumentsLayoutPage';
-import ProjectsPage from './Projects/ProjectsPage';
+import ProjectsPage from './projects/ProjectsPage';
 import ErrorPage from './pages/ErrorPage';
-import EyeTrackerPage from './Projects/EyeTrackerPage';
+import EyeTrackerPage from './projects/EyeTrackerPage';
 import AboutPage from './pages/AboutPage';
 
 const router = createBrowserRouter([

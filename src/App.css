@@ -125,8 +125,7 @@
   width: 100%;
   background: radial-gradient(circle,
       rgb(29, 30, 48) 0%,
-      transparent 95%
-    );
+      transparent 95%);
 }
 
 .back-to-top {
@@ -148,4 +147,10 @@
 .caption {
   color: #929292ff;
   font-size: 13px;
+}
+
+.carousel {
+  padding: 1em;
+  background-color: #26284d;
+  border-radius: 8px;
 }

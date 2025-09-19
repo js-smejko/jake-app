@@ -4,6 +4,7 @@ import classes from "./Carousel.module.css";
 
 interface CarouselProps {
   children: React.ReactNode[];
+  className?: string;
   style?: React.CSSProperties;
   maxHeight?: number;
   gap?: number;
@@ -22,7 +23,7 @@ function circularSlice<T>(arr: T[], start: number, length: number): T[] {
   return result;
 }
 
-const Carousel = ({ children, style, maxHeight = 2000, gap = 16 }: CarouselProps) => {
+const Carousel = ({ children, className, style, maxHeight = 2000, gap = 16 }: CarouselProps) => {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -111,6 +112,13 @@ const Carousel = ({ children, style, maxHeight = 2000, gap = 16 }: CarouselProps
           : currentIndex
     );
     setTranslateX(-slideWidth);
+    const videos = absoluteRef.current?.querySelectorAll("video");
+    console.log(videos?.length);
+    videos?.forEach(video => {
+      // video.pause();
+      // video.currentTime = 0;
+      video.play();
+    });
   };
 
   const handleMouseDown = (e: React.MouseEvent) => handleDragStart(e.clientX);
@@ -130,6 +138,7 @@ const Carousel = ({ children, style, maxHeight = 2000, gap = 16 }: CarouselProps
 
   return (
     <div 
+      className={className}
       style={{
         overflow: "hidden",
         ...style

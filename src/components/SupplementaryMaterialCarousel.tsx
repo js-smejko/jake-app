@@ -14,6 +14,7 @@ const SupplementaryMaterialCarousel = () => {
       gap={32}
     >
       <div>
+        <h4>1. Surveillance Setup</h4>
         <p>
           To learn about DC's behaviour, surveillance of them had to be continuous, however,
           their environment had highly limited access, which meant that while humans couldn't watch them, cameras had to.
@@ -31,6 +32,7 @@ const SupplementaryMaterialCarousel = () => {
         />
       </div>
       <div>
+        <h4>2. YOLO Inference</h4>
         <p>
           In combat of low resolution, a well known neural network architecture, YOLO (You Only Look Once), was accessed via Ultralytics' open source library.
           In the lower left picture, it might not be apparent to you where the fish are, but it is clear that they are pinpointed by the neural network.
@@ -45,6 +47,7 @@ const SupplementaryMaterialCarousel = () => {
         />
       </div>
       <div>
+        <h4>3. 3D Tracking</h4>
         <p>
           Knowing where the fish were in 2D wasn't enough - it was impossible to tell how close the fish were to the camera, hence, how far apart they really were.
           With inferences being made in two orthogonal frames, the next step was to pair the points between the two views to create 3D points.
@@ -62,6 +65,7 @@ const SupplementaryMaterialCarousel = () => {
         />
       </div>
       <div>
+        <h4>4. Coordinate Triangulation</h4>
         <p>
           To be certain of the 3D positions, calibration was performed using OpenCV functions.
           A bespoke routine was created to receive the UDP camera feeds and offer frames to OpenCV's chessboard corner detection.
@@ -87,6 +91,7 @@ const SupplementaryMaterialCarousel = () => {
         />
       </div>
       <div>
+        <h4>5. Footage Review</h4>
         <p>
           To eventually digitally review the tracking data was an extremely ambitious goal in the project's timeframe,
           meaning that human intervention was still required, and immediately useful to my stakeholder.
@@ -103,6 +108,7 @@ const SupplementaryMaterialCarousel = () => {
         />
       </div>
       <div>
+        <h4>6. Frame Design</h4>
         <p>
           Lighting differences between viewing sessions meant for continuous recalibration of the cameras and retraining of the neural network,
           which couldn't be done in real-time. In combat of this, a permanent solution was devised, which would see the cameras permanently mounted to a frame.
