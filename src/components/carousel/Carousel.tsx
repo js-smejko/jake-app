@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import DotNavigation from "./DotNavigation";
+import classes from "./Carousel.module.css";
 
 interface CarouselProps {
   children: React.ReactNode[];
   maxHeight?: number;
+  gap?: number;
 }
 
 function circularSlice<T>(arr: T[], start: number, length: number): T[] {
@@ -18,8 +21,8 @@ function circularSlice<T>(arr: T[], start: number, length: number): T[] {
   return result;
 }
 
-const Carousel = ({ children, maxHeight }: CarouselProps) => {
-  const [{ top, left, width }, setRelativeRect] = useState<DOMRect>(new DOMRect());
+const Carousel = ({ children, maxHeight = 2000, gap = 16 }: CarouselProps) => {
+  const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [startX, setStartX] = useState(0);
@@ -34,9 +37,11 @@ const Carousel = ({ children, maxHeight }: CarouselProps) => {
     children.map((child, index) => ({ child, key: index })
     ), [children]);
 
-  const slideWidth = useMemo(() => (
-    width + 16
-  ), [width]);
+  const slideWidth = width + gap;
+
+  useEffect(() => {
+    setTranslateX(-slideWidth);
+  }, [width]);
 
   useEffect(() => {
     if (!relativeRef.current || !absoluteRef.current) return;
@@ -44,7 +49,7 @@ const Carousel = ({ children, maxHeight }: CarouselProps) => {
     const relativeRO = new ResizeObserver((entries) => {
       for (const entry of entries) {
         if (entry.contentRect) {
-          setRelativeRect(entry.contentRect);
+          setWidth(entry.contentRect.width);
         }
       }
     });
@@ -52,7 +57,7 @@ const Carousel = ({ children, maxHeight }: CarouselProps) => {
     const absoluteRO = new ResizeObserver((entries) => {
       for (const entry of entries) {
         if (entry.contentRect.height) {
-          setHeight(prev => entry.contentRect.height <= (maxHeight ?? 1000) 
+          setHeight(prev => entry.contentRect.height <= maxHeight
             ? Math.max(prev, entry.contentRect.height)
             : prev
           );
@@ -123,59 +128,70 @@ const Carousel = ({ children, maxHeight }: CarouselProps) => {
   const handleTouchEnd = (e: React.TouchEvent) => handleDragEnd(e.changedTouches[0].clientX);
 
   return (
-    <div
-      ref={relativeRef}
-      style={{
-        position: "relative",
-        height: height
-      }}
-    >
+    <div>
       <div
-        ref={absoluteRef}
+        ref={relativeRef}
         style={{
-          display: "flex",
-          position: "absolute",
-          top, left,
-          transform: `translateX(${translateX}px)`,
-          transition: isTransitionEnabled ? "transform 0.3s ease" : "none",
-          gap: "16px",
+          position: "relative",
+          height
         }}
-        onTransitionEnd={handleTransitionEnd}
       >
-        {circularSlice(
-          keyedChildren, 
-          currentIndex - 1, 3
-        ).map(({ child, key }) => (
-          <div
-            key={key}
-            style={{
-              width,
-              userSelect: "none",
-              display: "flex",
-              height,
-              flexDirection: "column",
-              justifyContent: "space-between",
-            }}
+        <div
+          ref={absoluteRef}
+          style={{
+            display: "flex",
+            position: "absolute",
+            transform: `translateX(${translateX}px)`,
+            transition: isTransitionEnabled ? "transform 0.3s ease" : "none",
+            gap
+          }}
+          onTransitionEnd={handleTransitionEnd}
+        >
+          {circularSlice(
+            keyedChildren,
+            currentIndex - 1, 3
+          ).map(({ child, key }) => (
+            <div
+              key={key}
+              style={{
+                width,
+                userSelect: "none",
+                minHeight: height
+              }}
+            >
+              {child}
+            </div>
+          ))}
+        </div>
+        <div
+          className={classes["carousel-gesture-overlay"]}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchEnd}
+        >
+          <button
+            className={classes["carousel-button"]}
+            onClick={() => setCurrentIndex((currentIndex - 1 + keyedChildren.length) % keyedChildren.length)}
           >
-            {child}
-            <h2>{key + 1}</h2>
-          </div>
-        ))}
+            &lt;
+          </button>
+          <button
+            className={classes["carousel-button"]}
+            onClick={() => setCurrentIndex((currentIndex + 1) % keyedChildren.length)}
+          >
+            &gt;
+          </button>
+        </div>
       </div>
-      <div
-        style={{
-          position: "absolute",
-          top, left, width, height,
-          zIndex: 1
-        }}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        onTouchCancel={handleTouchEnd}
+      <DotNavigation
+        numDots={keyedChildren.length}
+        currentIndex={currentIndex}
+        onChange={setCurrentIndex}
       />
     </div>
   );

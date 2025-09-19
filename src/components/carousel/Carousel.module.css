@@ -1,0 +1,22 @@
+.carousel-button {
+  user-select: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid black;
+  color: white;
+}
+
+.carousel-gesture-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.carousel-gesture-overlay:hover {
+  cursor: grab;
+}
+.carousel-gesture-overlay:active {
+  cursor: grabbing;
+}

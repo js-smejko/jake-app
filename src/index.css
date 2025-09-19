@@ -73,6 +73,11 @@ ul {
   text-align: left;
 }
 
+figcaption {
+  color: #929292ff;
+  font-size: 13px;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

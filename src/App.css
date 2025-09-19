@@ -145,25 +145,7 @@
   display: none;
 }
 
-/* CAROUSEL */
-.carousel-wrapper {
-  width: 600px; /* match slideWidth in TS */
-  overflow: hidden;
-  margin: auto;
-  cursor: grab;
-}
-
-.carousel-wrapper:active {
-  cursor: grabbing;
-}
-
-.carousel-container {
-  display: flex;
-}
-
-.carousel-slide {
-  min-width: 600px; /* match slideWidth */
-  height: 350px;
-  flex-shrink: 0;
-  user-select: none; /* prevents text selection while dragging */
+.caption {
+  color: #929292ff;
+  font-size: 13px;
 }

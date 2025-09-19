@@ -36,7 +36,7 @@ const CADSoftwarePage = () => {
         { src: ASSETS + 'level0.webp', alt: "The least detailed folder", caption: true },
         { src: ASSETS + 'level2.webp', alt: "The most detailed folder", caption: true }
       ]}
-      maxHeight="400px"
+      maxHeight={400}
     />
     <p>
       Rendering the lowest detail for items aside from those closest to the camera would give the impression of the highest detail with minimal computational cost,
@@ -52,7 +52,7 @@ const CADSoftwarePage = () => {
         { src: ASSETS + 'level0_component.webp', alt: "Low detail rendering", caption: "Rendering the parent only, Cooling (21-J-900-01_ASSY - COOLING.stl)" },
         { src: ASSETS + 'level2_component.webp', alt: "High detail rendering", caption: "Rendering all of Cooling's children instead of the parent" }
       ]}
-      maxHeight="200px"
+      maxHeight={400}
     />
     <p>
       Dynamic choice of the level of detail to render was then based on the geometric displacement of the camera from each parent component.

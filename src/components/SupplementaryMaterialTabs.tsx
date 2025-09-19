@@ -47,7 +47,7 @@ const SupplementaryMaterialTabs = () => {
                   { src: "/assets/dissertation/fish_640.png", alt: "Low resolution DC", caption: "640x640px" }
                 ]}
                 caption="Detail of Danionella cerebrum when capturing at different resolutions: decreased resolution greatly increased the framerate."
-                maxHeight="200px"
+                maxHeight={200}
               />
             </>
             case "2. Inference": return <>
@@ -60,7 +60,7 @@ const SupplementaryMaterialTabs = () => {
                   { src: "/assets/dissertation/before_inference.webp", alt: "Before inference" },
                   { src: "/assets/dissertation/inferences.webp", alt: "Inferences" }
                 ]}
-                maxHeight="640px"
+                maxHeight={640}
                 caption="Before and after YOLO inference: fish barely visible to the human eye are pinpointed by the neural network."
               />
             </>
@@ -100,7 +100,7 @@ const SupplementaryMaterialTabs = () => {
                   { src: "/assets/dissertation/uncalibrated_bounds.webp", alt: "Uncalibrated bounds", caption: true },
                   { src: "/assets/dissertation/triangulated_bounds.webp", alt: "Triangulated bounds", caption: true }
                 ]}
-                maxHeight="640px"
+                maxHeight={640}
                 caption="Direct pairing of points vs. triangulation of points from independent 2D localisation of an LED in canon orthogonal views.
                   The LED was used to trace the bounds of the tank to demonstrate the skew of points."
               />

@@ -16,7 +16,13 @@ const FloatImage = forwardRef<HTMLSpanElement, FloatImageProps>((
   return (
     <span ref={ref} className={className}>
       <img src={src} alt={alt} style={{ maxHeight: 200, width: '100%', objectFit: 'contain' }} />
-      {caption && <i>{typeof caption === "string" ? caption : alt}</i>}
+      {caption ? (
+        // <figcaption>
+          <i className="caption">
+            {typeof caption === "string" ? caption : alt}
+          </i>
+        // </figcaption>
+      ) : null}
     </span>
   )
 });

@@ -1,9 +1,9 @@
 import CaptionedImageRow from "./CaptionedImageRow"
 import CaptionedVideo from "./CaptionedVideo"
-import Carousel from "./Carousel"
+import Carousel from "./carousel/Carousel"
 import FloatImage from "./FloatImage"
 
-const Demo = () => {
+const SupplementaryMaterialCarousel = () => {
   return (
     <Carousel>
       <div>
@@ -20,7 +20,7 @@ const Demo = () => {
             { src: "/assets/dissertation/fish_640.png", alt: "Low resolution DC", caption: "640x640px" }
           ]}
           caption="Detail of Danionella cerebrum when capturing at different resolutions: decreased resolution greatly increased the framerate."
-          maxHeight="200px"
+          maxHeight={200}
         />
       </div>
       <div>
@@ -33,7 +33,7 @@ const Demo = () => {
             { src: "/assets/dissertation/before_inference.webp", alt: "Before inference" },
             { src: "/assets/dissertation/inferences.webp", alt: "Inferences" }
           ]}
-          maxHeight="640px"
+          maxHeight={640}
           caption="Before and after YOLO inference: fish barely visible to the human eye are pinpointed by the neural network."
         />
       </div>
@@ -51,6 +51,7 @@ const Demo = () => {
           src="/assets/dissertation/implemented_tracker.mp4"
           maxHeight="640px"
           caption="Tracking an LED in 3D - only the image detection model needs adapting for tracking DC instead"
+          controls={false}
         />
       </div>
       <div>
@@ -73,7 +74,7 @@ const Demo = () => {
             { src: "/assets/dissertation/uncalibrated_bounds.webp", alt: "Uncalibrated bounds", caption: true },
             { src: "/assets/dissertation/triangulated_bounds.webp", alt: "Triangulated bounds", caption: true }
           ]}
-          maxHeight="640px"
+          maxHeight={640}
           caption="Direct pairing of points vs. triangulation of points from independent 2D localisation of an LED in canon orthogonal views.
                   The LED was used to trace the bounds of the tank to demonstrate the skew of points."
         />
@@ -91,6 +92,7 @@ const Demo = () => {
           src="/assets/dissertation/rewind_demo.mp4"
           maxHeight="640px"
           caption="A demonstration of 30 minutes' surveillance backlog - both cameras are focused on a digital clock"
+          controls={false}
         />
       </div>
       <div>
@@ -105,10 +107,9 @@ const Demo = () => {
           alt="Camera frame design"
           caption="The camera frame design. Cameras are mounted to the foremost arms; their weight will press the rearmost hooks against the base of the fish tank to secure it."
         />
-        <a href="/assets/dissertation/frame.stl" download>Download the STL</a>
       </div>
     </Carousel>
   )
 };
 
-export default Demo;
+export default SupplementaryMaterialCarousel;

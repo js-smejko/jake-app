@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import type { ImageProps } from "../util/interfaces";
 
 const GAP = 10;
@@ -9,48 +9,17 @@ interface ImageData extends ImageProps {
 
 interface CaptionedImageProps {
   images: ImageProps[];
-  caption?: string;
-  maxHeight?: string;
+  caption?: string | boolean;
+  maxHeight?: number; // px height limit (optional)
 }
 
-const CaptionedImageRow = ({ images, maxHeight, caption }: CaptionedImageProps) => {
+const CaptionedImageRow = ({ images, caption, maxHeight }: CaptionedImageProps) => {
   const [imageData, setImageData] = useState<ImageData[]>([]);
-  const [containerWidth, setContainerWidth] = useState(0);
-  const [totalAspect, setTotalAspect] = useState(0);
-  const [totalGap, setTotalGap] = useState(0);
-  const [relativeHeight, setRelativeHeight] = useState(maxHeight || "auto");
-  const relativeRef = useRef<HTMLDivElement>(null);
-  const absoluteRef = useRef<HTMLDivElement>(null);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (!relativeRef.current || !absoluteRef.current) return;
+    let cancelled = false;
 
-    const relativeRO = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.contentRect.width) {
-          setContainerWidth(entry.contentRect.width);
-        }
-      }
-    });
-
-    const absoluteRO = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.contentRect.height) {
-          setRelativeHeight(`${entry.contentRect.height}px`);
-        }
-      }
-    });
-
-    relativeRO.observe(relativeRef.current);
-    absoluteRO.observe(absoluteRef.current);
-
-    return () => {
-      relativeRO.disconnect();
-      absoluteRO.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
     Promise.all<ImageData>(
       images.map(
         (img) =>
@@ -60,67 +29,89 @@ const CaptionedImageRow = ({ images, maxHeight, caption }: CaptionedImageProps) 
             image.onload = () =>
               resolve({
                 ...img,
-                aspect: image.naturalWidth / image.naturalHeight
+                aspect: image.naturalWidth / image.naturalHeight,
               });
           })
       )
-    ).then(data => {
-      setImageData(data);
-      setTotalAspect(data.reduce((sum, { aspect }) => sum + aspect, 0));
-      setTotalGap((data.length - 1) * GAP);
+    ).then((data) => {
+      if (!cancelled) {
+        setImageData(data);
+        setReady(true);
+      }
     });
+
+    return () => {
+      cancelled = true;
+    };
   }, [images]);
 
-  useEffect(() => {
-    if (absoluteRef.current) {
-      setRelativeHeight(`${absoluteRef.current.offsetHeight}px`);
-    }
-  }, [absoluteRef.current]);
-
-  const availableWidth = containerWidth - totalGap;
+  if (!ready) return null;
 
   return (
-    <span
-      ref={relativeRef}
+    <div
       style={{
-        display: "inline-block",
         width: "100%",
-        height: absoluteRef.current
-          ? relativeHeight
-          : "auto",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
       }}
     >
-      <span
-        ref={absoluteRef}
+      <div
         style={{
-          width: "min-content",
-          position: "absolute",
           display: "flex",
+          flexDirection: "row",
+          gap: GAP,
           justifyContent: "center",
-          flexDirection: "column",
+          alignItems: "flex-start",
+          width: "100%",
         }}
       >
-        {containerWidth ? <>
-          <span style={{ display: "flex", flexDirection: "row", gap: GAP }}>
-            {imageData.map((img, i) => (
-              <span key={i} style={{ textAlign: "center", display: "flex", flexDirection: "column" }}>
-                <img
-                  src={img.src}
-                  alt={img.alt}
-                  style={{
-                    maxHeight,
-                    width: (availableWidth * img.aspect) / totalAspect,
-                    objectFit: "contain",
-                  }}
-                />
-                {img.caption && <i>{typeof img.caption === "string" ? img.caption : img.alt}</i>}
-              </span>
-            ))}
-          </span>
-          {caption && <i>{caption}</i>}
-        </> : null}
-      </span>
-    </span>
+        {imageData.map((img, i) => (
+          <figure
+            key={img.src + i}
+            style={{
+              margin: 0,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+              flexGrow: img.aspect,   // proportional to aspect ratio
+              flexShrink: img.aspect,
+              flexBasis: 0,           // lets flexGrow decide actual width
+            }}
+          >
+            <img
+              src={img.src}
+              alt={img.alt ?? ""}
+              loading="lazy"
+              decoding="async"
+              draggable={false}
+              style={{
+                width: "100%",              // fills flexed width
+                height: "auto",
+                maxHeight: maxHeight ? `${maxHeight}px` : "none",
+                objectFit: "contain",
+                display: "block",
+              }}
+            />
+            {img.caption && (
+              <figcaption
+                style={{
+                  fontSize: 12,
+                  color: "#929292ff",
+                  marginTop: 6,
+                }}
+              >
+                {img.caption}
+              </figcaption>
+            )}
+          </figure>
+        ))}
+      </div>
+      {caption && (
+        <i style={{ marginTop: 6, fontSize: 13, color: "#929292ff" }}>{caption}</i>
+      )}
+    </div>
   );
 };
 

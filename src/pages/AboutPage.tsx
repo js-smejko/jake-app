@@ -10,7 +10,7 @@ const AboutPage = () => {
         { src: "/assets/general/grad_ball.webp", alt: "My friends and I at the Grad Ball" },
         { src: "/assets/general/holiday.webp", alt: "Holiday with friends" }
       ]}
-      maxHeight="200px"
+      maxHeight={200}
     />
     <div style={{ display: "flex", gap: 10 }}>
       <div style={{ flex: 1 }}>

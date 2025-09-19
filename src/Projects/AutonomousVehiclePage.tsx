@@ -30,7 +30,7 @@ const AutonomousVehiclePage = () => {
       The PCB and layout were granted at this stage, introducing the cohort to soldering.
     </p>
     <CaptionedImageRow
-      maxHeight="200px"
+      maxHeight={200}
       images={[
         { src: ASSETS + 'initial_car.webp', alt: 'Initial vehicle' },
         { src: ASSETS + 'final_car.webp', alt: 'Final vehicle' }
@@ -51,13 +51,13 @@ const AutonomousVehiclePage = () => {
       while others used steering offsets; even oscillating steering patterns.
       I recognised that variables such as battery fullness and floor flatness could invalidate these methods and sought a more dynamic solution.
     </p>
-    <p>
       <CaptionedImageRow
-        maxHeight="200px"
+        maxHeight={200}
         images={[
           { src: ASSETS + 'encoders.webp', alt: 'Rotary encoders connecting to the mainboard', caption: true },
         ]}
       />
+    <p>
       Unaware of PI control at this stage, I counted the rotary encoder readings on each wheel and used the proportional difference between these to increase the duty cycle of the wheel with the lowest count and vice versa.
       Encoder count totals were taken over a measured 10 metre stretch and it was safely assumed that this would remain constant.
     </p>
@@ -73,10 +73,16 @@ const AutonomousVehiclePage = () => {
       The task at hand assumed the vehicle's starting position was perpendicular to a wall and would see it reverse up to the wall, draw parallel with it, then finally reverse until close to the next wall, ultimately parking in the corner of a confinement.
     </p>
     <p>
-      <span className="captioned-image-container float-right">
-        <img src={ASSETS + 'mpu.webp'} alt='MPU-6050' style={{ maxHeight: '200px' }} />
-        <i>MPU-6050</i>
-      </span>
+      <FloatImage
+        src={ASSETS + 'mpu.webp'}
+        alt='MPU-6050'
+        float='right'
+        caption
+      />
+      The first step was to reverse until the ultrasonic sensor read a distance below a threshold, indicating proximity to the wall.
+      At this point, the vehicle would stop and prepare to turn.
+    </p>
+    <p>
       Pulling parallel with the initial wall made use of a gyroscope housed upon an MCP-6500,
       allowing the polling of the vehicle's current orientation. Both sensors were interfaced to an ESP32.
       This offered an introduction to I2C and the voltage level shifter as signals would prompt the Arduino Nano to actuate the motors and servo.
@@ -135,7 +141,7 @@ const AutonomousVehiclePage = () => {
       here were the results:
     </p>
     <CaptionedImageRow
-      maxHeight="200px"
+      maxHeight={200}
       images={[
         { src: ASSETS + 'blue_apple.webp', alt: 'Blue apple' },
         { src: ASSETS + 'green_apple.webp', alt: 'Green apple' },
@@ -161,7 +167,7 @@ const AutonomousVehiclePage = () => {
       This is how the reference images looked and the track colours that they represented:
     </p>
     <CaptionedImageRow
-      maxHeight="200px"
+      maxHeight={200}
       images={[
         { src: ASSETS + 'circle.webp', alt: 'Circle - Red', caption: true },
         { src: ASSETS + 'star.webp', alt: 'Star - Green', caption: true },
@@ -176,7 +182,7 @@ const AutonomousVehiclePage = () => {
       it was followed. Otherwise, the HSV threshold will default to black again.
     </p>
     <CaptionedImageRow
-      maxHeight="200px"
+      maxHeight={200}
       images={[
         { src: ASSETS + 'raw_star.webp', alt: 'Raw star', caption: true },
         { src: ASSETS + 'processed_star.webp', alt: 'Processed star', caption: true },
@@ -188,7 +194,7 @@ const AutonomousVehiclePage = () => {
       it is clear here that the selected track is green, which corresponds with the star sign.
     </p>
     <CaptionedImageRow
-      maxHeight="200px"
+      maxHeight={200}
       images={[
         { src: ASSETS + 'raw_tracks.webp', alt: 'Raw tracks', caption: true },
         { src: ASSETS + 'processed_star_ref.webp', alt: 'Detected sign', caption: true },
