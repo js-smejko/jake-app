@@ -1,5 +1,4 @@
 import SupplementaryMaterialCarousel from "../components/SupplementaryMaterialCarousel";
-import SupplementaryMaterialTabs from "../components/SupplementaryMaterialTabs";
 import { MAIN_NAVIGATION_PARAMS } from "../constants";
 
 const DissertationPage = () => {
