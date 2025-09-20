@@ -1,7 +1,6 @@
 import BlockFloatContent from "../components/BlockFloatContent";
 import FloatImage from "../components/FloatImage";
 import HighlightsCarousel from "../components/HighlightsCarousel";
-import HighlightsTabs from "../components/HighlightsTabs";
 import { Link } from "react-router-dom";
 
 const HomePage = () => {

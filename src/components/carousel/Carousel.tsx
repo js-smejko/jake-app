@@ -112,13 +112,12 @@ const Carousel = ({ children, className, style, maxHeight = 2000, gap = 16 }: Ca
           : currentIndex
     );
     setTranslateX(-slideWidth);
-    const videos = absoluteRef.current?.querySelectorAll("video");
-    console.log(videos?.length);
-    videos?.forEach(video => {
-      // video.pause();
-      // video.currentTime = 0;
-      video.play();
-    });
+    // const videos = absoluteRef.current?.querySelectorAll("video");
+    // videos?.forEach(video => {
+    //   // video.pause();
+    //   // video.currentTime = 0;
+    //   video.play();
+    // });
   };
 
   const handleMouseDown = (e: React.MouseEvent) => handleDragStart(e.clientX);
@@ -137,7 +136,7 @@ const Carousel = ({ children, className, style, maxHeight = 2000, gap = 16 }: Ca
   const handleTouchEnd = (e: React.TouchEvent) => handleDragEnd(e.changedTouches[0].clientX);
 
   return (
-    <div 
+    <div
       className={className}
       style={{
         overflow: "hidden",
@@ -188,6 +187,14 @@ const Carousel = ({ children, className, style, maxHeight = 2000, gap = 16 }: Ca
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
           onTouchCancel={handleTouchEnd}
+          onClick={() => {
+            const videos = absoluteRef.current?.querySelectorAll("video");
+            videos?.forEach(video => {
+              // video.pause();
+              // video.currentTime = 0;
+              video.play();
+            });
+          }}
         >
           <button
             className={classes["carousel-button"]}

@@ -5,9 +5,9 @@ interface CaptionedVideoProps {
   controls?: boolean;
 };
 
-const CaptionedVideo = ({ src, maxHeight, caption, controls = true }: CaptionedVideoProps) => {
+const CaptionedVideo = ({ src, maxHeight, caption, controls }: CaptionedVideoProps) => {
   return (
-    <div style={{ flexDirection: 'column' }}>
+    <figure>
       <video
         src={src}
         style={{ maxHeight, maxWidth: '100%' }}
@@ -17,10 +17,10 @@ const CaptionedVideo = ({ src, maxHeight, caption, controls = true }: CaptionedV
         muted
         loop
       />
-      {/* <figcaption> */}
+      <figcaption>
         <i className="caption">{caption}</i>
-      {/* </figcaption> */}
-    </div>
+      </figcaption>
+    </figure>
   )
 };
 
