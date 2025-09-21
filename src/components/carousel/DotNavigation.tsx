@@ -1,4 +1,6 @@
 import { useRef, useState } from "react";
+import classes from "./Carousel.module.css";
+import { circularNext, circularPrev } from "./Carousel.util";
 
 interface DotNavigationProps {
   numDots: number;
@@ -6,7 +8,7 @@ interface DotNavigationProps {
   onChange: (index: number) => void;
 };
 
-const DotNavigation = ({ numDots, currentIndex, onChange: setCurrentIndex }: DotNavigationProps) => {
+const DotNavigation = ({ numDots, currentIndex, onChange }: DotNavigationProps) => {
   const [isDragging, setIsDragging] = useState(false);
 
   const dotsRef = useRef<HTMLDivElement>(null);
@@ -18,7 +20,7 @@ const DotNavigation = ({ numDots, currentIndex, onChange: setCurrentIndex }: Dot
   const handleDragMove = (clientX: number) => {
     if (!isDragging || !dotsRef.current) return;
     const { left, width } = dotsRef.current.getBoundingClientRect();
-    setCurrentIndex(Math.max(Math.min(Math.floor((clientX - left) / (width / numDots)), numDots - 1), 0));
+    onChange(Math.max(Math.min(Math.floor((clientX - left) / (width / numDots)), numDots - 1), 0));
   };
 
   const handleDragEnd = () => {
@@ -32,42 +34,45 @@ const DotNavigation = ({ numDots, currentIndex, onChange: setCurrentIndex }: Dot
     <div
       style={{
         display: "flex",
-        justifyContent: "center",
+        justifyContent: "space-around",
       }}
+    >
+      <button
+        className={classes["carousel-button"]}
+        onClick={() => onChange(circularPrev(currentIndex, numDots))}
       >
-      <div 
-        style={{ 
-          display: "flex", 
-          alignItems: "center",
-          paddingBlock: 16,
-        }}
-        ref={dotsRef}
-        onMouseDown={handleDragStart}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleDragEnd}
-        onMouseLeave={handleDragEnd}
-        onTouchStart={handleDragStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleDragEnd}
-        onTouchCancel={handleDragEnd}
-      >
-
+        &lt;
+      </button>
+      <div className={classes["navigation-container"]}>
+        <div
+          className={classes["gesture-overlay"]}
+          ref={dotsRef}
+          onMouseDown={handleDragStart}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleDragEnd}
+          onMouseLeave={handleDragEnd}
+          onTouchStart={handleDragStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleDragEnd}
+          onTouchCancel={handleDragEnd}
+        />
         {Array.from({ length: numDots }).map((_, i) =>
           <span
             key={i}
+            className={classes.dot}
             style={{
-              display: "inline-block",
-              width: 8,
-              height: 8,
-              borderRadius: "50%",
               backgroundColor: i === currentIndex ? "#ccc" : "#808080ff",
-              margin: 4,
-              transition: "background-color 0.3s ease",
             }}
-            // onClick={() => !isDragging && setCurrentIndex(i)}
+            draggable={false}
           />
         )}
       </div>
+      <button
+        className={classes["carousel-button"]}
+        onClick={() => onChange(circularNext(currentIndex, numDots))}
+      >
+        &gt;
+      </button>
     </div>
   )
 };

@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import type { FloatImageProps } from "../util/interfaces";
 
 const FloatImage = forwardRef<HTMLSpanElement, FloatImageProps>((
-  { src, alt, caption, float }, 
+  { src, alt, caption, float },
   ref
 ) => {
   let className = 'captioned-image-container';
@@ -15,12 +15,21 @@ const FloatImage = forwardRef<HTMLSpanElement, FloatImageProps>((
 
   return (
     <span ref={ref} className={className}>
-      <img src={src} alt={alt} style={{ maxHeight: 200, maxWidth: '100%', objectFit: 'contain' }} />
+      <img
+        src={src}
+        alt={alt}
+        style={{
+          maxHeight: 200,
+          maxWidth: '100%',
+          objectFit: 'contain'
+        }}
+        draggable={false}
+      />
       {caption ? (
         // <figcaption>
-          <i className="caption">
-            {typeof caption === "string" ? caption : alt}
-          </i>
+        <i className="caption">
+          {typeof caption === "string" ? caption : alt}
+        </i>
         // </figcaption>
       ) : null}
     </span>

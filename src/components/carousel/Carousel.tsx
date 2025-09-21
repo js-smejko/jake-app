@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import DotNavigation from "./DotNavigation";
-import classes from "./Carousel.module.css";
+import { circularNext, circularPrev, circularSlice } from "./Carousel.util";
 
 interface CarouselProps {
   children: React.ReactNode[];
@@ -8,21 +8,7 @@ interface CarouselProps {
   style?: React.CSSProperties;
   maxHeight?: number;
   gap?: number;
-  onClick?: (slideIndex: number, e: React.MouseEvent<HTMLDivElement>) => void;
   onSlideChange?: (slideIndex: number) => void;
-}
-
-function circularSlice<T>(arr: T[], start: number, length: number): T[] {
-  const result: T[] = [];
-  const n = arr.length;
-
-  let normalizedStart = ((start % n) + n) % n;
-
-  for (let i = 0; i < length; i++) {
-    result.push(arr[(normalizedStart + i) % n]);
-  }
-
-  return result;
 }
 
 const Carousel = ({ 
@@ -31,7 +17,6 @@ const Carousel = ({
   style, 
   maxHeight = 2000, 
   gap = 16,
-  onClick,
   onSlideChange
 }: CarouselProps) => {
   const [width, setWidth] = useState(0);
@@ -116,9 +101,9 @@ const Carousel = ({
     setIsTransitionEnabled(false);
     setCurrentIndex(prev => {
       const nextIndex = translateX === 0
-      ? (prev - 1 + keyedChildren.length) % keyedChildren.length
+      ? circularPrev(prev, keyedChildren.length)
       : translateX === -slideWidth * 2
-      ? (prev + 1) % keyedChildren.length
+      ? circularNext(prev, keyedChildren.length)
       : prev;
       onSlideChange?.(nextIndex);
       return nextIndex;
@@ -162,12 +147,21 @@ const Carousel = ({
         <div
           ref={absoluteRef}
           style={{
+            cursor: isDragging ? "grabbing" : "grab",
             display: "flex",
             position: "absolute",
             transform: `translateX(${translateX}px)`,
             transition: isTransitionEnabled ? "transform 0.3s ease" : "none",
             gap,
           }}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchEnd}
           onTransitionEnd={handleTransitionEnd}
         >
           {circularSlice(
@@ -185,31 +179,6 @@ const Carousel = ({
               {child}
             </div>
           ))}
-        </div>
-        <div
-          className={classes["carousel-gesture-overlay"]}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          onTouchCancel={handleTouchEnd}
-          onClick={e => onClick?.(currentIndex, e)}
-        >
-          <button
-            className={classes["carousel-button"]}
-            onClick={() => setCurrentIndex((currentIndex - 1 + keyedChildren.length) % keyedChildren.length)}
-          >
-            &lt;
-          </button>
-          <button
-            className={classes["carousel-button"]}
-            onClick={() => setCurrentIndex((currentIndex + 1) % keyedChildren.length)}
-          >
-            &gt;
-          </button>
         </div>
       </div>
       <DotNavigation
