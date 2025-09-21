@@ -8,6 +8,8 @@ interface CarouselProps {
   style?: React.CSSProperties;
   maxHeight?: number;
   gap?: number;
+  onClick?: (slideIndex: number, e: React.MouseEvent<HTMLDivElement>) => void;
+  onSlideChange?: (slideIndex: number) => void;
 }
 
 function circularSlice<T>(arr: T[], start: number, length: number): T[] {
@@ -23,7 +25,15 @@ function circularSlice<T>(arr: T[], start: number, length: number): T[] {
   return result;
 }
 
-const Carousel = ({ children, className, style, maxHeight = 2000, gap = 16 }: CarouselProps) => {
+const Carousel = ({ 
+  children,
+  className, 
+  style, 
+  maxHeight = 2000, 
+  gap = 16,
+  onClick,
+  onSlideChange
+}: CarouselProps) => {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -104,20 +114,16 @@ const Carousel = ({ children, className, style, maxHeight = 2000, gap = 16 }: Ca
 
   const handleTransitionEnd = () => {
     setIsTransitionEnabled(false);
-    setCurrentIndex(
-      translateX === 0
-        ? (currentIndex - 1 + keyedChildren.length) % keyedChildren.length
-        : translateX === -slideWidth * 2
-          ? (currentIndex + 1) % keyedChildren.length
-          : currentIndex
-    );
+    setCurrentIndex(prev => {
+      const nextIndex = translateX === 0
+      ? (prev - 1 + keyedChildren.length) % keyedChildren.length
+      : translateX === -slideWidth * 2
+      ? (prev + 1) % keyedChildren.length
+      : prev;
+      onSlideChange?.(nextIndex);
+      return nextIndex;
+    });
     setTranslateX(-slideWidth);
-    // const videos = absoluteRef.current?.querySelectorAll("video");
-    // videos?.forEach(video => {
-    //   // video.pause();
-    //   // video.currentTime = 0;
-    //   video.play();
-    // });
   };
 
   const handleMouseDown = (e: React.MouseEvent) => handleDragStart(e.clientX);
@@ -126,6 +132,9 @@ const Carousel = ({ children, className, style, maxHeight = 2000, gap = 16 }: Ca
 
   const handleTouchStart = (e: React.TouchEvent) => handleDragStart(e.touches[0].clientX);
   const handleTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length !== 1) {
+      setIsDragging(false);
+    }
     const clientX = e.touches[0].clientX;
     const delta = clientX - startX;
     if (Math.abs(delta) > 10) {
@@ -187,14 +196,7 @@ const Carousel = ({ children, className, style, maxHeight = 2000, gap = 16 }: Ca
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
           onTouchCancel={handleTouchEnd}
-          onClick={() => {
-            const videos = absoluteRef.current?.querySelectorAll("video");
-            videos?.forEach(video => {
-              // video.pause();
-              // video.currentTime = 0;
-              video.play();
-            });
-          }}
+          onClick={e => onClick?.(currentIndex, e)}
         >
           <button
             className={classes["carousel-button"]}

@@ -4,6 +4,19 @@ import Carousel from "./carousel/Carousel"
 import FloatImage from "./FloatImage"
 
 const SupplementaryMaterialCarousel = () => {
+  const videoRefs = new Map<number, React.RefObject<HTMLVideoElement>>();
+  
+  const handleClick = (i: number) => {
+    const ref = videoRefs.get(i);
+    if (ref?.current) {
+      if (ref.current.paused) {
+        ref.current.play();
+      } else {
+        ref.current.pause();
+      }
+    }
+  };
+
   return (
     <Carousel
       style={{
@@ -12,6 +25,7 @@ const SupplementaryMaterialCarousel = () => {
         borderRadius: "8px",
       }}
       gap={32}
+      onClick={handleClick}
     >
       <div>
         <h4>1. Surveillance Setup</h4>
@@ -58,6 +72,9 @@ const SupplementaryMaterialCarousel = () => {
           Below, the algorithm is demonstrated using an LED to model the fish. A view of each camera is shown alongside the algorithm's trace of the LED in 3D.
         </p>
         <CaptionedVideo
+          ref={el => {
+            if (el) videoRefs.set(2, { current: el });
+          }}
           src="/assets/dissertation/implemented_tracker.mp4"
           maxHeight="640px"
           caption="Tracking an LED in 3D - only the image detection model needs adapting for tracking DC instead"
@@ -101,6 +118,9 @@ const SupplementaryMaterialCarousel = () => {
           which is no imposition to the client.
         </p>
         <CaptionedVideo
+          ref={el => {
+            if (el) videoRefs.set(4, { current: el });
+          }}
           src="/assets/dissertation/rewind_demo.mp4"
           maxHeight="640px"
           caption="A demonstration of 30 minutes' surveillance backlog - both cameras are focused on a digital clock"

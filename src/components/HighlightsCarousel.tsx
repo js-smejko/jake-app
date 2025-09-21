@@ -2,15 +2,32 @@ import CaptionedVideo from "./CaptionedVideo";
 import Carousel from "./carousel/Carousel";
 
 const HighlightsCarousel = () => {
+  const videoRefs = new Map<number, React.RefObject<HTMLVideoElement>>();
+  
+  const handleClick = (i: number) => {
+    const ref = videoRefs.get(i);
+    if (ref?.current) {
+      if (ref.current.paused) {
+        ref.current.play();
+      } else {
+        ref.current.pause();
+      }
+    }
+  };
+
   return (
     <Carousel
       className="carousel"
+      onClick={handleClick}
     >
       <div>
         <h4>3D tracking of items using canon orthogonal camera feed, transferred via UDP from a Raspberry Pi</h4>
         <CaptionedVideo 
           src="assets/dissertation/implemented_tracker.mp4" 
           maxHeight={600}
+          ref={el => { 
+            if (el) videoRefs.set(0, { current: el }) 
+          }}
         />
       </div>
       <div>
@@ -18,6 +35,9 @@ const HighlightsCarousel = () => {
         <CaptionedVideo 
           src="assets/autonomousVehicle/ir_navigation.mp4"
           maxHeight={600}
+          ref={el => { 
+            if (el) videoRefs.set(1, { current: el }) 
+          }}
         />
       </div>
       <div>
@@ -25,6 +45,9 @@ const HighlightsCarousel = () => {
         <CaptionedVideo 
           src="assets/CADSoftware/stl_video.mp4"
           maxHeight={600} 
+          ref={el => {
+            if (el) videoRefs.set(2, { current: el })
+          }}
         />
       </div>
     </Carousel>
