@@ -5,10 +5,11 @@ interface CaptionedVideoProps {
   src: string;
   maxHeight?: number | string;
   caption?: string;
+  onLoad?: () => void;
 };
 
 const CaptionedVideo = forwardRef<HTMLVideoElement, CaptionedVideoProps>((
-  { src, maxHeight, caption },
+  { src, maxHeight, caption, onLoad },
   ref
 ) => {
   return (
@@ -23,6 +24,7 @@ const CaptionedVideo = forwardRef<HTMLVideoElement, CaptionedVideoProps>((
           controls
           muted
           loop
+          onLoadedData={onLoad}
         />
       </div>
       <figcaption>

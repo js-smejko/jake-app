@@ -184,7 +184,10 @@ const Carousel = ({
       <DotNavigation
         numDots={keyedChildren.length}
         currentIndex={currentIndex}
-        onChange={setCurrentIndex}
+        onChange={i => {
+          setCurrentIndex(i);
+          onSlideChange?.(i);
+        }}
       />
     </div>
   );

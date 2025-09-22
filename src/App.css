@@ -154,3 +154,8 @@
   background-color: #26284d;
   border-radius: 8px;
 }
+
+.clear {
+  clear: both;
+  margin-bottom: 1em;
+}

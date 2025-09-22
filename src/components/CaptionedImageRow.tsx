@@ -102,7 +102,7 @@ const CaptionedImageRow = ({ images, caption, maxHeight }: CaptionedImageProps) 
                   marginTop: 6,
                 }}
               >
-                {img.caption}
+                {typeof img.caption === "string" ? img.caption : img.caption && img.alt}
               </figcaption>
             )}
           </figure>

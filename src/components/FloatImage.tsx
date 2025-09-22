@@ -1,39 +1,67 @@
-import { forwardRef } from "react";
-import type { FloatImageProps } from "../util/interfaces";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 
-const FloatImage = forwardRef<HTMLSpanElement, FloatImageProps>((
-  { src, alt, caption, float },
-  ref
-) => {
-  let className = 'captioned-image-container';
+interface FloatImageProps {
+  src: string;
+  alt: string;
+  caption?: string | boolean;
+  float?: "left" | "right";
+}
 
-  if (float === 'left') {
-    className += ' float-left';
-  } else if (float === 'right') {
-    className += ' float-right';
+const FloatImage = forwardRef<HTMLSpanElement, FloatImageProps>(
+  ({ src, alt, caption, float }, forwardedRef) => {
+    const localRef = useRef<HTMLSpanElement>(null);
+    const [shouldClear, setShouldClear] = useState(false);
+
+    console.log(shouldClear);
+
+    const adjustClear = () => {
+      if (!localRef.current) return;
+      const rect = localRef.current.getBoundingClientRect();
+
+      // Estimate remaining horizontal space for text
+      const spaceForText =
+        float === "left"
+          ? window.innerWidth - rect.right
+          : rect.left;
+
+      // console.log("Space for text:", spaceForText);
+
+      setShouldClear(spaceForText < 200);
+    };
+
+    useEffect(() => {
+      adjustClear();
+      window.addEventListener("resize", adjustClear);
+      return () => window.removeEventListener("resize", adjustClear);
+    }, []);
+
+    let className = "captioned-image-container";
+    if (float === "left") className += " float-left";
+    if (float === "right") className += " float-right";
+
+    return (
+      <>
+        <span ref={localRef} className={className}>
+          <img
+            src={src}
+            alt={alt}
+            style={{
+              maxHeight: 200,
+              maxWidth: "100%",
+              objectFit: "contain",
+            }}
+            draggable={false}
+          />
+          {caption && (
+            <i className="caption">
+              {typeof caption === "string" ? caption : alt}
+            </i>
+          )}
+        </span>
+        {shouldClear && <div style={{ clear: "both" }} />}
+      </>
+    );
   }
-
-  return (
-    <span ref={ref} className={className}>
-      <img
-        src={src}
-        alt={alt}
-        style={{
-          maxHeight: 200,
-          maxWidth: '100%',
-          objectFit: 'contain'
-        }}
-        draggable={false}
-      />
-      {caption ? (
-        // <figcaption>
-        <i className="caption">
-          {typeof caption === "string" ? caption : alt}
-        </i>
-        // </figcaption>
-      ) : null}
-    </span>
-  )
-});
+);
 
 export default FloatImage;
