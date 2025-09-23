@@ -8,7 +8,7 @@ const AboutPage = () => {
       images={[
         { src: '/assets/general/cousins.webp', alt: 'My cousin and I at a wedding' },
         { src: '/assets/general/grad_ball.webp', alt: 'My friends and I at the Grad Ball' },
-        { src: '/assets/general/laney.webp', alt: "My family's dog, Laney" }
+        { src: '/assets/general/laney.webp', alt: "My family's dog" }
       ]}
       maxHeight={200}
     />
@@ -17,7 +17,7 @@ const AboutPage = () => {
         <h3>Background</h3>
         <p>
           My surname is Ukrainian, but I am a British and Australian citizen.
-          I am currently based in the East Midlands, England, and face no imposition relocating.
+          I am currently based in the East Midlands, England, and I am happy to relocate.
         </p>
         <h3>Character</h3>
         <p>

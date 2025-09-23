@@ -27,7 +27,7 @@ const HighlightsCarousel = () => {
           src="assets/autonomousVehicle/ir_navigation.mp4"
           maxHeight={600}
           ref={el => { 
-            if (el) videoRefs.set(1, { current: el }) 
+            if (el) videoRefs.set(0, { current: el }) 
           }}
         />
       </div>
@@ -37,7 +37,7 @@ const HighlightsCarousel = () => {
           src="assets/dissertation/implemented_tracker.mp4" 
           maxHeight={600}
           ref={el => { 
-            if (el) videoRefs.set(0, { current: el }) 
+            if (el) videoRefs.set(1, { current: el }) 
           }}
         />
       </div>
