@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import styles from "./CaptionedVideo.module.css";
+import styles from "./footageFrames.module.css";
 
 interface CaptionedVideoProps {
   src: string;

@@ -1,6 +1,6 @@
 import MainNavigationDropdown from "./MainNavigationDropdown";
 import classes from "./MainNavigation.module.css";
-import { MAIN_NAVIGATION_PARAMS } from "../constants";
+import { MAIN_NAVIGATION_PARAMS } from "../../constants";
 import { forwardRef } from "react";
 
 const MainNavigation = forwardRef<HTMLDivElement>((_, ref) => {

@@ -1,19 +1,19 @@
-import BlockFloatContent from '../components/BlockFloatContent';
-import CaptionedImageRow from '../components/CaptionedImageRow';
-import CaptionedVideo from '../components/CaptionedVideo';
+import CaptionedImageRow from '../components/captionedFootage/CaptionedImageRow';
+import CaptionedVideo from '../components/captionedFootage/CaptionedVideo';
 import FloatImage from '../components/FloatImage';
 
 const AutonomousVehiclePage = () => {
-  const ASSETS = import.meta.env.BASE_URL + "assets/autonomousVehicle/";
-
   return <>
     <h2>Autonomous Vehicle Project</h2>
     <i>The University of Nottingham's 1<sup>st</sup> year project 2022-2023</i>
     <h3>Overview</h3>
     <p>
+      This project spanned the whole academic year and saw printed circuit boards (PCBs), two motors and a servo eventually self-drive using various microcontrollers and sensors.
+    </p>
+    <p>
       Work in our first year of university didn't affect our final grades;
       It was used to introduce lab report writing, teamwork, project management and definitely gave a solid first impression for the course.
-      The project spanned the whole academic year and exercised a variety of technologies as the vehicle advanced, including:
+      It exercised a variety of technologies as the vehicle advanced, including:
     </p>
     <ul>
       <li>Soldering through hole and surface mount components to a premade PCB</li>
@@ -21,7 +21,7 @@ const AutonomousVehiclePage = () => {
       <li>Communication between controllers using I2C</li>
       <li>Implementing basic control algorithms</li>
       <li>Actuation of motors using Pulse Width Modulation (PWM)</li>
-      <li>Using OpenCV to implement computer vision on Raspberry Pi OS (Linux based)</li>
+      <li>Using OpenCV to implement computer vision on a Raspberry Pi</li>
     </ul>
     <h3>Starting Off</h3>
     <p>
@@ -32,8 +32,8 @@ const AutonomousVehiclePage = () => {
     <CaptionedImageRow
       maxHeight={200}
       images={[
-        { src: ASSETS + 'initial_car.webp', alt: 'Initial vehicle' },
-        { src: ASSETS + 'final_car.webp', alt: 'Final vehicle' }
+        { src: '/assets/autonomousVehicle/initial_car.webp', alt: 'Initial vehicle' },
+        { src: '/assets/autonomousVehicle/final_car.webp', alt: 'Final vehicle' }
       ]}
       caption="Vehicle at the start (left) and end (right) of the project"
     />
@@ -47,24 +47,23 @@ const AutonomousVehiclePage = () => {
     </p>
     <p>
       Motor speeds could be controlled using pulse width modulation (PWM),
-      leaving many using trial and error with different duty cycles,
-      while others used steering offsets; even oscillating steering patterns.
-      I recognised that variables such as battery fullness and floor flatness could invalidate these methods and sought a more dynamic solution.
+      which left many students trialling different duty cycles, steering offsets and even oscillating steering patterns.
+      I recognised that variables such as inclination of the floor could compromise these methods and sought a more dynamic solution.
     </p>
-      <CaptionedImageRow
-        maxHeight={200}
-        images={[
-          { src: ASSETS + 'encoders.webp', alt: 'Rotary encoders connecting to the mainboard', caption: true },
-        ]}
-      />
+    <CaptionedImageRow
+      maxHeight={200}
+      images={[
+        { src: '/assets/autonomousVehicle/encoders.webp', alt: 'Rotary encoders connecting to the mainboard', caption: true },
+      ]}
+    />
     <p>
-      Unaware of PI control at this stage, I counted the rotary encoder readings on each wheel and used the proportional difference between these to increase the duty cycle of the wheel with the lowest count and vice versa.
-      Encoder count totals were taken over a measured 10 metre stretch and it was safely assumed that this would remain constant.
+      I counted the rotary encoder readings on each wheel and used the proportional difference between these to increase the duty cycle of the wheel with the lowest count and vice versa.
+      The coefficient of the linear relationship between encoder count and distance was quantified for environments where wheelspin was negligible and this was very effective over the 10m stretch.
     </p>
     <h3>Autonomous Parking Solution</h3>
     <p>
       <FloatImage
-        src={ASSETS + 'hcsr.webp'}
+        src={'/assets/autonomousVehicle/hcsr.webp'}
         alt='HC-SR04'
         float='left'
         caption
@@ -74,45 +73,48 @@ const AutonomousVehiclePage = () => {
     </p>
     <p>
       <FloatImage
-        src={ASSETS + 'mpu.webp'}
+        src={'/assets/autonomousVehicle/mpu.webp'}
         alt='MPU-6050'
         float='right'
         caption
       />
-      The first step was to reverse until the ultrasonic sensor read a distance below a threshold, indicating proximity to the wall.
+      The first step was to reverse until the ultrasonic sensor read a distance below a set threshold, indicating close proximity to the wall.
       At this point, the vehicle would stop and prepare to turn.
     </p>
     <p>
       Pulling parallel with the initial wall made use of a gyroscope housed upon an MCP-6500,
       allowing the polling of the vehicle's current orientation. Both sensors were interfaced to an ESP32.
-      This offered an introduction to I2C and the voltage level shifter as signals would prompt the Arduino Nano to actuate the motors and servo.
+      This offered an introduction to I2C and the voltage level shifter so that its signals could prompt the Arduino Nano to actuate the motors and servo.
     </p>
     <p>
-      Once the vehicle was within, assuming the other wall was to its left,
-      it would perform what was nearly a 180-degree turn to the right.
-      The exact angle was hardcoded and carefully chosen such that the frontend of the vehicle was close to this wall.
-      When the gyroscope rotated to this threshold, the wheels were drawn parallel with the wall and remained this way until the whole vehicle followed,
-      ensuring that the vehicle wouldn't stray from or crash into the wall.
+      A nearly 180-degree turn positioned the vehicle's front end near to the wall that it reversed up to -
+      this value was hardcoded and chosen to minimise the distance from the wall while still allowing the steering to then draw parallel with it in the next step.
+      Keeping the steering parallel with the wall while proceeding forwards required continuous monitoring of the vehicle's orientation and meant that the vehicle would not stray towards or away from the wall,
+      eliminating variables such as wheel slip and the need to time the routine.
     </p>
-    <h3>Track Following with IR Array</h3>
-    <BlockFloatContent
-      src={ASSETS + 'ir_array.webp'}
+    <p>
+      Once the vehicle was parallel with the first wall, it would poll its distance from the wall at its rear until it was close,
+      finally arriving in the corner of the confinement.
+    </p>
+    <h3>IR Array Track Following</h3>
+    <FloatImage
+      src={'/assets/autonomousVehicle/ir_array.webp'}
       alt='IR Array'
       float='left'
       caption
-    >
-      <p>
-        An array of paired infrared (IR) emitters and receivers would then be used to follow a track.
-        The track was laid out as black tape on a white surface,
-        causing the IR to reflect with different intensities and the minimum and maximum received signal was amplified between the ESP32's ADC limits of 0-3.3 volts.
-        The sensor pairs were to run parallel with the vehicle's width, meaning as the vehicle strayed from the track, outmost sensors would read low and vice versa.
-      </p>
-      <p>
-        Steering would then point in the direction of the sensor(s) that read low;
-        to keep things simple, when the vehicle would leave the track,
-        the steering would full lock in the direction it was last pointing.
-      </p>
-    </BlockFloatContent>
+    />
+    <p>
+      An array of paired infrared (IR) emitters and receivers would then be used to follow a track.
+      The track was laid out as black tape on a white surface, causing the IR to reflect with different intensities.
+      The minimum and maximum received signal was amplified between the ESP32's ADC limits of 0-3.3 volts
+      and the sensor pairs were to run parallel with the vehicle's width, meaning as the vehicle strayed from the track, outmost sensors would read low and vice versa.
+    </p>
+    <p>
+      Steering would then point in the direction of the sensor(s) that read low;
+      to keep things simple, when the vehicle left the track,
+      the steering full-locked in the direction it was last pointing.
+    </p>
+    <div className="clear" />
     <p>My design was quite unique, here was its method:</p>
     <ol style={{ textAlign: 'left' }}>
       <li>Staggered the array in an arrow, allowing edge-cases to represent more sheer steering angles.</li>
@@ -122,7 +124,7 @@ const AutonomousVehiclePage = () => {
       <li>Scaled this result to a steering angle.</li>
     </ol>
     <p>Here is the result:</p>
-    <CaptionedVideo src={ASSETS + 'ir_navigation.mp4'} />
+    <CaptionedVideo src={'/assets/autonomousVehicle/ir_navigation.mp4'} />
     <h3>Navigation with Computer Vision</h3>
     <p>
       At this stage in the project, the benches we worked at became teams:
@@ -137,42 +139,42 @@ const AutonomousVehiclePage = () => {
     <p>
       Now, the signs were to be recognised. At this stage we hadn't yet been introduced to image detection neural networks,
       so laid out was an introductory task that used basic image processing such as finding contours.
-      At this stage, blurring the images before finding contours and linearly searching for the largest in area in the image worked;
+      Blurring the images before finding contours and linearly searching for the largest shape bound by the contours distinguished the subject from its background;
       here were the results:
     </p>
     <CaptionedImageRow
       maxHeight={200}
       images={[
-        { src: ASSETS + 'blue_apple.webp', alt: 'Blue apple' },
-        { src: ASSETS + 'green_apple.webp', alt: 'Green apple' },
-        { src: ASSETS + 'green_car.webp', alt: 'Green car' },
+        { src: '/assets/autonomousVehicle/blue_apple.webp', alt: 'Blue apple' },
+        { src: '/assets/autonomousVehicle/green_apple.webp', alt: 'Green apple' },
+        { src: '/assets/autonomousVehicle/green_car.webp', alt: 'Green car' },
       ]}
-      caption="Determining the colour of the dominant object in the image."
+      caption="Determining the dominant colour in the image."
     />
-    <BlockFloatContent
-      src={ASSETS + 'perspective_transform.webp'}
+    <FloatImage
+      src={'/assets/autonomousVehicle/perspective_transform.webp'}
       alt='Perspective transform'
       float="right"
       caption
-    >
-      <p>
-        After approximating the contours of the inner object as a rectangle,
-        a perspective transform was applied to the corners within the frame that might contain the symbol.
-      </p>
-      <p>
-        HSV thresholds applied to both the transformed image and the reference image prepared them for comparison.
-      </p>
-    </BlockFloatContent>
+    />
+    <p>
+      After approximating the contours of the inner object as a rectangle,
+      a perspective transform was applied to the corners within the frame that might contain the symbol.
+    </p>
+    <p>
+      HSV thresholds applied to both the transformed image and the reference image prepared them for comparison.
+    </p>
+    <div className="clear" />
     <p>
       This is how the reference images looked and the track colours that they represented:
     </p>
     <CaptionedImageRow
       maxHeight={200}
       images={[
-        { src: ASSETS + 'circle.webp', alt: 'Circle - Red', caption: true },
-        { src: ASSETS + 'star.webp', alt: 'Star - Green', caption: true },
-        { src: ASSETS + 'triangle.webp', alt: 'Triangle - Blue', caption: true },
-        { src: ASSETS + 'umbrella.webp', alt: 'Umbrella - Yellow', caption: true },
+        { src: '/assets/autonomousVehicle/circle.webp', alt: 'Circle - Red', caption: true },
+        { src: '/assets/autonomousVehicle/star.webp', alt: 'Star - Green', caption: true },
+        { src: '/assets/autonomousVehicle/triangle.webp', alt: 'Triangle - Blue', caption: true },
+        { src: '/assets/autonomousVehicle/umbrella.webp', alt: 'Umbrella - Yellow', caption: true },
       ]}
     />
     <p>
@@ -184,42 +186,45 @@ const AutonomousVehiclePage = () => {
     <CaptionedImageRow
       maxHeight={200}
       images={[
-        { src: ASSETS + 'raw_star.webp', alt: 'Raw star', caption: true },
-        { src: ASSETS + 'processed_star.webp', alt: 'Processed star', caption: true },
-        { src: ASSETS + 'processed_star_ref.webp', alt: 'Processed star reference', caption: true },
+        { src: '/assets/autonomousVehicle/raw_star.webp', alt: 'Raw star', caption: true },
+        { src: '/assets/autonomousVehicle/processed_star.webp', alt: 'Processed star', caption: true },
+        { src: '/assets/autonomousVehicle/processed_star_ref.webp', alt: 'Processed star reference', caption: true },
       ]}
     />
     <p>
       Below, based on the position of the track relative to the raw frame,
-      it is clear here that the selected track is green, which corresponds with the star sign.
+      it is clear that the selected track is green, which correctly corresponds with the star sign.
     </p>
     <CaptionedImageRow
       maxHeight={200}
       images={[
-        { src: ASSETS + 'raw_tracks.webp', alt: 'Raw tracks', caption: true },
-        { src: ASSETS + 'processed_star_ref.webp', alt: 'Detected sign', caption: true },
-        { src: ASSETS + 'processed_tracks.webp', alt: 'Selected track', caption: true },
+        { src: '/assets/autonomousVehicle/raw_tracks.webp', alt: 'Raw tracks', caption: true },
+        { src: '/assets/autonomousVehicle/processed_star_ref.webp', alt: 'Detected sign', caption: true },
+        { src: '/assets/autonomousVehicle/processed_tracks.webp', alt: 'Selected track', caption: true },
       ]}
     />
     <p>
       Now that the correct track is in view, the average justification of pixels from the centremost column was used to determine the steering angle.
       I2C was then used to communicate this angle to the Arduino Nano, which automatically adjusted the motors' differential in accordance with sharp turns.
     </p>
+    <p>
+      The result looked similar to the IR navigation video above, however, junctions were now also present and the vehicle would change track accordingly.
+    </p>
     <h3>Maze Navigation</h3>
-    <BlockFloatContent
-      src={ASSETS + 'keypad.webp'}
+    <FloatImage
+      src={'/assets/autonomousVehicle/keypad.webp'}
       alt="Keypad"
       float="left"
       caption
-    >
-      <p>
-        After completing the task at hand, I paid my full attention to the maze navigation.
-        The challenge set out a list of straight line distances and right angled turn directions that the vehicle was to follow,
-        with the vehicle's starting position and orientation being known.
-        Routes were to be planned in advance, entered by the user via a keypad and LCD display and by the time I came to help,
-        these electronics were already interfaced to a teammates' vehicle, leaving only their implementation at hand.
-      </p>
-    </BlockFloatContent>
+    />
+    <p>
+      After completing my task of navigation with computer vision, I paid my full attention to the maze navigation.
+      The challenge set out a list of straight line distances and right angled turn directions that the vehicle was to follow,
+      with the vehicle's starting position and orientation being known.
+      Routes were to be planned in advance, entered by the user via a keypad and LCD display and by the time I came to help,
+      these electronics were already interfaced to a teammates' vehicle, leaving only their implementation at hand.
+    </p>
+    <div className="clear" />
     <p>
       Buttons were laid out as follows, the idea was to replicate the WASD layout for high familiarity with gamers:
     </p>

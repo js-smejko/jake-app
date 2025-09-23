@@ -15,7 +15,7 @@ const DissertationPage = () => {
     <div>
       <h2>Dissertation</h2>
       <p style={{ textAlign: 'center' }}>
-        My final year project at the University of Nottingham saw the foundation of a novel system,
+        My final year project at the University of Nottingham saw the foundation of a novel system;
         an idea of Dr. Kevin Webb's which he supervised.
         The project was moderated by Dr. Peter Christopher and I am proud to have been
         <i>"one of the most enthusiastic communicators / advocates for a project [he's] ever seen".</i>
@@ -25,7 +25,7 @@ const DissertationPage = () => {
       </p>
       <h3>Abstract</h3>
       <p>
-        University of Nottingham's developmental genetics department has recently introduced a new vertebrate fish, Danionella cerebrum (DC),
+        University of Nottingham's developmental genetics department recently introduced a new vertebrate fish, Danionella cerebrum (DC),
         however, its breeding habits have proven to be unusually unpredictable. In combat of this, Dr. Rob Wilkinson proposes to identify the behavioural cues exhibited by DC during procreation using AI.
         This project aims to facilitate this by creating a system to record and catalogue the fish's behaviour.
       </p>

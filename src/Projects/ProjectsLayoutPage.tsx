@@ -1,14 +1,15 @@
-import { NavLink, Outlet, type NavLinkRenderProps } from "react-router-dom";
-import TabNavigation from "../components/TabNavigation";
+import { NavLink, Outlet, useLocation, type NavLinkRenderProps } from "react-router-dom";
+import TabNavigation from "../components/tabNavigation/TabNavigation";
 import { MAIN_NAVIGATION_PARAMS } from "../constants";
 
 const ProjectsLayoutPage = () => {
-  const classFn = ({ isActive }: NavLinkRenderProps) =>
-    "tab " + (isActive ? "active" : '');
+  const location = useLocation();
 
   const tabs = MAIN_NAVIGATION_PARAMS.find(param =>
     param.link.title === "Projects"
   )?.subLinks;
+
+  const path = location.pathname.split("/")[2];
 
   const homeClassFn = ({ isActive }: NavLinkRenderProps) =>
     isActive ? "hidden" : "";
@@ -23,12 +24,13 @@ const ProjectsLayoutPage = () => {
         tabs={tabs.map(({ title }) => title)}
         tabRenderer={(tab) => (
           <NavLink
-            className={classFn} 
+            className="tab"
             to={tabs.find(({ title }) => title === tab)!.link}
           >
-            <span>{tab}</span>
+            {tab}
           </NavLink>
         )}
+        selectedIdx={tabs.findIndex(({ link }) => link === path)}
       >
         <Outlet />
       </TabNavigation>

@@ -1,5 +1,5 @@
-import CaptionedImageRow from "./CaptionedImageRow"
-import CaptionedVideo from "./CaptionedVideo"
+import CaptionedImageRow from "./captionedFootage/CaptionedImageRow"
+import CaptionedVideo from "./captionedFootage/CaptionedVideo"
 import Carousel from "./carousel/Carousel"
 import FloatImage from "./FloatImage"
 

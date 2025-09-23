@@ -1,4 +1,4 @@
-import CaptionedImageRow from "../components/CaptionedImageRow";
+import CaptionedImageRow from "../components/captionedFootage/CaptionedImageRow";
 
 const AboutPage = () => {
   return <>
@@ -27,7 +27,7 @@ const AboutPage = () => {
         </p>
         <p>
           Outside of work, I like to think I've slowly introduced more of an appreciation for musical instruments to my friends.
-          In my spare time, I'll summon them for jam sessions and we always try to base our social gatherings where there's live music.
+          In my spare time, I'll gather them for jam sessions and we always try to base our social gatherings where there's live music.
         </p>
         <p>
           I reserve Sundays for a family dog walk and roast dinner and make an effort to take the dog walking with a friend once a week.

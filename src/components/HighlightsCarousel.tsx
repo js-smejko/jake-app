@@ -1,4 +1,4 @@
-import CaptionedVideo from "./CaptionedVideo";
+import CaptionedVideo from "./captionedFootage/CaptionedVideo";
 import Carousel from "./carousel/Carousel";
 
 const HighlightsCarousel = () => {

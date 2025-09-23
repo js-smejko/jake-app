@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import MainNavigation from "../MainNavigation/MainNavigation";
+import MainNavigation from "../components/mainNavigation/MainNavigation";
 import { Outlet, useLocation } from "react-router-dom";
 
 const RootLayoutPage = () => {
