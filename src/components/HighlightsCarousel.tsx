@@ -22,22 +22,22 @@ const HighlightsCarousel = () => {
       onSlideChange={handleSlideChange}
     >
       <div>
-        <h4>3D tracking of items using canon orthogonal camera feed, transferred via UDP from a Raspberry Pi</h4>
-        <CaptionedVideo 
-          src="assets/dissertation/implemented_tracker.mp4" 
-          maxHeight={600}
-          ref={el => { 
-            if (el) videoRefs.set(0, { current: el }) 
-          }}
-        />
-      </div>
-      <div>
         <h4>A small vehicle autonomously navigating a track using an array of infrared emitter/sensor pairs</h4>
         <CaptionedVideo 
           src="assets/autonomousVehicle/ir_navigation.mp4"
           maxHeight={600}
           ref={el => { 
             if (el) videoRefs.set(1, { current: el }) 
+          }}
+        />
+      </div>
+      <div>
+        <h4>3D tracking of items using canon orthogonal camera feed, transferred via UDP from a Raspberry Pi</h4>
+        <CaptionedVideo 
+          src="assets/dissertation/implemented_tracker.mp4" 
+          maxHeight={600}
+          ref={el => { 
+            if (el) videoRefs.set(0, { current: el }) 
           }}
         />
       </div>

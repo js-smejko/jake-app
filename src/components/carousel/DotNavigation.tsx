@@ -33,19 +33,19 @@ const DotNavigation = ({ numDots, currentIndex, onChange }: DotNavigationProps) 
   return (
     <div
       style={{
-        display: "flex",
-        justifyContent: "space-around",
+        display: 'flex',
+        justifyContent: 'space-around',
       }}
     >
       <button
-        className={classes["carousel-button"]}
+        className={classes['carousel-button']}
         onClick={() => onChange(circularPrev(currentIndex, numDots))}
       >
         &lt;
       </button>
-      <div className={classes["navigation-container"]}>
+      <div className={classes['navigation-container']}>
         <div
-          className={classes["gesture-overlay"]}
+          className={classes['gesture-overlay']}
           ref={dotsRef}
           onMouseDown={handleDragStart}
           onMouseMove={handleMouseMove}
@@ -61,14 +61,13 @@ const DotNavigation = ({ numDots, currentIndex, onChange }: DotNavigationProps) 
             key={i}
             className={classes.dot}
             style={{
-              backgroundColor: i === currentIndex ? "#ccc" : "#808080ff",
+              backgroundColor: i === currentIndex ? '#ccc' : '#808080ff',
             }}
-            draggable={false}
           />
         )}
       </div>
       <button
-        className={classes["carousel-button"]}
+        className={classes['carousel-button']}
         onClick={() => onChange(circularNext(currentIndex, numDots))}
       >
         &gt;

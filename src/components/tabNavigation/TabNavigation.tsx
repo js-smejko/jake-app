@@ -12,37 +12,36 @@ const TabNavigation = ({ tabs, selectedIdx, tabRenderer, children }: TabNavigati
   return (
     <div>
       <nav
-        style={{ position: "relative", display: "flex", justifyContent: "center" }}
+        style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}
       >
-        <ul className={`empty-list ${classes["tab-list"]}`}>
+        <ul className={`empty-list ${classes['tab-list']}`}>
           {tabs?.map((tab, idx) => (
             <li 
               key={idx} 
-              style={{ flex: 1, display: "flex" }} 
+              style={{ flex: 1, display: 'flex' }} 
               className={
                 selectedIdx === idx
-                  ? `${classes["tab"]} ${classes["active"]}`
-                  : classes["tab"]
+                  ? `${classes['tab']} ${classes['active']}`
+                  : classes['tab']
               }
-              onClick={() => console.log("BUBBLED!")}
             >
               <span>{tabRenderer(tab, idx)}</span>
             </li>
           ))}
         </ul>
         <div
-          className={classes["border-top"]}
+          className={classes['border-top']}
           style={{
-            position: "absolute",
+            position: 'absolute',
             left: 0,
             right: 0,
             bottom: -3,
             height: 3,
-            pointerEvents: "none",
+            pointerEvents: 'none',
           }}
         />
       </nav>
-      <div className={classes["content"]}>{children}</div>
+      <div className={classes['content']}>{children}</div>
     </div>
   );
 };

@@ -60,15 +60,15 @@ const CaptionedImageRow = ({ images, caption, maxHeight }: CaptionedImageProps) 
           >
             <img
               src={img.src}
-              alt={img.alt ?? ""}
+              alt={img.alt ?? ''}
               draggable={false}
               style={{
-                maxHeight: maxHeight ? `${maxHeight}px` : "none",
+                maxHeight: maxHeight ? `${maxHeight}px` : 'none',
               }}
             />
             {img.caption && (
               <figcaption className={classes.caption}>
-                {typeof img.caption === "string" ? img.caption : img.caption && img.alt}
+                {typeof img.caption === 'string' ? img.caption : img.caption && img.alt}
               </figcaption>
             )}
           </figure>

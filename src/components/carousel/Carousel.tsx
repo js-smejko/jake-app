@@ -147,11 +147,11 @@ const Carousel = ({
         <div
           ref={absoluteRef}
           style={{
-            cursor: isDragging ? "grabbing" : "grab",
-            display: "flex",
-            position: "absolute",
+            cursor: isDragging ? 'grabbing' : 'grab',
+            display: 'flex',
+            position: 'absolute',
             transform: `translateX(${translateX}px)`,
-            transition: isTransitionEnabled ? "transform 0.3s ease" : "none",
+            transition: isTransitionEnabled ? 'transform 0.3s ease' : 'none',
             gap,
           }}
           onMouseDown={handleMouseDown}
@@ -172,7 +172,7 @@ const Carousel = ({
               key={key}
               style={{
                 width,
-                userSelect: "none",
+                userSelect: 'none',
                 minHeight: height
               }}
             >

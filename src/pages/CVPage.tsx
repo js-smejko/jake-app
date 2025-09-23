@@ -11,7 +11,7 @@ const CVPage = () => {
         Take pride in delivering high-quality work and strive for perfection,
         while remaining flexible and deadline-driven to ensure the best possible outcomes.
       </p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
         <div>
           <h2>University of Nottingham</h2>
           <p>

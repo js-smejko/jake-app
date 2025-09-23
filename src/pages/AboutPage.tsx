@@ -6,13 +6,13 @@ const AboutPage = () => {
     <h2>About Me</h2>
     <CaptionedImageRow
       images={[
-        { src: "/assets/general/cousins.webp", alt: "My cousin and I at a wedding" },
-        { src: "/assets/general/grad_ball.webp", alt: "My friends and I at the Grad Ball" },
-        { src: "/assets/general/laney.webp", alt: "My family's dog, Laney" }
+        { src: '/assets/general/cousins.webp', alt: 'My cousin and I at a wedding' },
+        { src: '/assets/general/grad_ball.webp', alt: 'My friends and I at the Grad Ball' },
+        { src: '/assets/general/laney.webp', alt: "My family's dog, Laney" }
       ]}
       maxHeight={200}
     />
-    <div style={{ display: "flex", gap: 10 }}>
+    <div style={{ display: 'flex', gap: 10 }}>
       <div style={{ flex: 1 }}>
         <h3>Background</h3>
         <p>
