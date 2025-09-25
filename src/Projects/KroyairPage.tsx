@@ -1,10 +1,11 @@
-import FloatImage from '../components/FloatImage';
+import CaptionedVideo from '../components/captionedFootage/CaptionedVideo';
+import FloatImage from '../components/captionedFootage/FloatImage';
 
 const KroyairPage = () => {
   return <>
     <h2>Service Management Software Project</h2>
-    <i style={{ display: "block", marginBottom: 16 }}>
-      During the 2024 summer break I worked for Kroyair as a field engineer and recognised room for improved quality of life in some of the software they were using.
+    <i style={{ display: 'block', marginBottom: 16 }}>
+      During the 2024 summer break I worked for Kroyair as a field engineer and recognised room for improved efficiency in some of the software they were using.
     </i>
     <FloatImage
       src="/assets/kroyair/kroyair_van.webp"
@@ -24,7 +25,7 @@ const KroyairPage = () => {
     </p>
     <p>
       I volunteered to create a bespoke system to better suit their needs outside of my on-site engineering work, with no company time or cost commitment, which they gladly accepted.
-      The new software decrease their ongoing subscription costs, automate the recording of timesheets and mileage, and track their assets more assertively.
+      The new software decrease their ongoing subscription costs, automate the recording of timesheets and mileage, and track their assets more strictly.
       There is no expectation for this project to reach completion, and it can absolutely be parked when I gain employment.
       I am primarily doing this as a learning exercise in full-stack development,
       with the benefit of a clear progression trajectory compared to alternative project ideas.
@@ -37,8 +38,7 @@ const KroyairPage = () => {
     <p>
       Mistakes like timestamping jobs to the wrong date were common and irreversible, reducing the reliability of the data.
       Notes were appended to jobs to indicate the work that was undertaken, assisting future work on particular sites,
-      however, they could end up messy if including a written amendment to a misplaced date of arrival.
-      The software is by no means bad, but didn't quite fit this particular use case.
+      however, this was the only place to clarify amendments to earlier misinputs, which compromised the conciseness of the engineering notes.
     </p>
     <h3>The Solution</h3>
     <i>
@@ -63,6 +63,19 @@ const KroyairPage = () => {
         This currently exists as a skeleton using Vite, written in TypeScript.
       </li>
     </ul>
+    <h3>Demonstration</h3>
+    <CaptionedVideo
+      src="/assets/kroyair/mobile_timings.mp4"
+      caption="A screen recording of the mobile app (hosted on Expo Go) on an iOS device"
+      maxHeight="600px"
+      float="left"
+      autoPlay
+    />
+    <p>
+      A demonstration of the mobile app showing recommended timings for AI generated jobs.
+      These are grouped by location, allowing the linear interpolation of recommended timings across numerous jobs completed in the same visit.
+      Styling is currently minimal.
+    </p>
   </>;
 };
 

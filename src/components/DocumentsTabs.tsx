@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import TabNavigation from './tabNavigation/TabNavigation';
-import { MAIN_NAVIGATION_PARAMS } from '../constants';
+import { MAIN_NAVIGATION_PARAMS } from '../util/constants';
 import DocumentsPage from '../pages/DocumentsPage';
 
 const DocumentsTabs = () => {

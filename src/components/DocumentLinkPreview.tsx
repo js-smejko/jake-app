@@ -1,4 +1,4 @@
-import FloatImage from "./FloatImage";
+import FloatImage from "./captionedFootage/FloatImage";
 
 interface DocumentLinkProps {
   img: string;

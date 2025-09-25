@@ -1,9 +1,12 @@
 import CaptionedImageRow from "./captionedFootage/CaptionedImageRow"
 import CaptionedVideo from "./captionedFootage/CaptionedVideo"
 import Carousel from "./carousel/Carousel"
-import FloatImage from "./FloatImage"
+import FloatImage from "./captionedFootage/FloatImage"
+import { useCarouselAutoplay } from "../util/hooks";
 
 const SupplementaryMaterialCarousel = () => {
+  const { videoRefs, handleSlideChange } = useCarouselAutoplay();
+
   return (
     <Carousel
       className="carousel"
@@ -13,6 +16,7 @@ const SupplementaryMaterialCarousel = () => {
           : '#26284d',
       }}
       gap={32}
+      onSlideChange={handleSlideChange}
     >
       <div>
         <h4>1. Surveillance Setup</h4>
@@ -62,6 +66,9 @@ const SupplementaryMaterialCarousel = () => {
           src="/assets/dissertation/implemented_tracker.mp4"
           maxHeight="640px"
           caption="Tracking an LED in 3D - only the image detection model needs adapting for tracking DC instead"
+          ref={el => {
+            if (el) videoRefs.set(2, { current: el })
+          }}
         />
       </div>
       <div>
@@ -102,6 +109,9 @@ const SupplementaryMaterialCarousel = () => {
           src="/assets/dissertation/rewind_demo.mp4"
           maxHeight="640px"
           caption="A demonstration of 30 minutes' surveillance backlog - both cameras are focused on a digital clock"
+          ref={el => {
+            if (el) videoRefs.set(4, { current: el })
+          }}
         />
       </div>
       <div>

@@ -1,20 +1,9 @@
+import { useCarouselAutoplay } from "../util/hooks";
 import CaptionedVideo from "./captionedFootage/CaptionedVideo";
 import Carousel from "./carousel/Carousel";
 
 const HighlightsCarousel = () => {
-  const videoRefs = new Map<number, React.RefObject<HTMLVideoElement>>();
-  
-  const handleSlideChange = (i: number) => {
-    videoRefs.forEach((r, idx) => {
-      if (r.current === null) return;
-      if (idx !== i) {
-        r.current.pause();
-        r.current.currentTime = 0;
-      } else {
-        r.current.play();
-      }
-    });
-  };
+  const { videoRefs, handleSlideChange } = useCarouselAutoplay();
 
   return (
     <Carousel
@@ -32,7 +21,7 @@ const HighlightsCarousel = () => {
         />
       </div>
       <div>
-        <h4>3D tracking of items using canon orthogonal camera feed, transferred via UDP from a Raspberry Pi</h4>
+        <h4>3D tracking of items using canon orthogonal camera feeds and image detection neural networks, transferred via UDP from a Raspberry Pi</h4>
         <CaptionedVideo 
           src="assets/dissertation/implemented_tracker.mp4" 
           maxHeight={600}

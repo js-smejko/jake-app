@@ -1,15 +1,15 @@
 import SupplementaryMaterialCarousel from "../components/SupplementaryMaterialCarousel";
-import { MAIN_NAVIGATION_PARAMS } from "../constants";
+import { MAIN_NAVIGATION_PARAMS } from "../util/constants";
 
 const DissertationPage = () => {
   const documents = MAIN_NAVIGATION_PARAMS.find(nav =>
-    nav.link.title === "Documents")?.subLinks;
+    nav.link.title === 'Documents')?.subLinks;
 
   const dissertationLink = documents?.find(doc =>
-    doc.title === "Dissertation")?.link;
+    doc.title === 'Dissertation')?.link;
 
   const feedbackLink = documents?.find(doc =>
-    doc.title === "Dissertation Feedback")?.link;
+    doc.title === 'Dissertation Feedback')?.link;
 
   return (
     <div>
@@ -27,7 +27,7 @@ const DissertationPage = () => {
       <p>
         University of Nottingham's developmental genetics department recently introduced a new vertebrate fish, Danionella cerebrum (DC),
         however, its breeding habits have proven to be unusually unpredictable. In combat of this, Dr. Rob Wilkinson proposes to identify the behavioural cues exhibited by DC during procreation using AI.
-        This project aims to facilitate this by creating a system to record and catalogue the fish's behaviour.
+        This project aims to facilitate this by creating a system to record and catalogue the fish's behaviour to determine and recreate the stimuli that prompt procreation.
       </p>
       <h3>Supplementary Material</h3>
       <SupplementaryMaterialCarousel />

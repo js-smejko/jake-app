@@ -1,6 +1,7 @@
 import CaptionedImageRow from '../components/captionedFootage/CaptionedImageRow';
 import CaptionedVideo from '../components/captionedFootage/CaptionedVideo';
-import FloatImage from '../components/FloatImage';
+import Carousel from '../components/carousel/Carousel';
+import FloatImage from '../components/captionedFootage/FloatImage';
 
 const AutonomousVehiclePage = () => {
   return <>
@@ -61,23 +62,23 @@ const AutonomousVehiclePage = () => {
       The coefficient of the linear relationship between encoder count and distance was quantified for environments where wheelspin was negligible and this was very effective over the 10m stretch.
     </p>
     <h3>Autonomous Parking Solution</h3>
+    <FloatImage
+      src="/assets/autonomousVehicle/hcsr.webp"
+      alt="HC-SR04"
+      float="left"
+      caption
+    />
     <p>
-      <FloatImage
-        src={'/assets/autonomousVehicle/hcsr.webp'}
-        alt='HC-SR04'
-        float='left'
-        caption
-      />
       A single HC-SR04 ultrasonic sensor mounted at the vehicle's rear would then allowed perception of the distance to nearby walls and similar.
       The task at hand assumed the vehicle's starting position was perpendicular to a wall and would see it reverse up to the wall, draw parallel with it, then finally reverse until close to the next wall, ultimately parking in the corner of a confinement.
     </p>
+    <FloatImage
+      src="/assets/autonomousVehicle/mpu.webp"
+      alt="MPU-6050"
+      float="right"
+      caption
+    />
     <p>
-      <FloatImage
-        src={'/assets/autonomousVehicle/mpu.webp'}
-        alt='MPU-6050'
-        float='right'
-        caption
-      />
       The first step was to reverse until the ultrasonic sensor read a distance below a set threshold, indicating close proximity to the wall.
       At this point, the vehicle would stop and prepare to turn.
     </p>
@@ -98,9 +99,9 @@ const AutonomousVehiclePage = () => {
     </p>
     <h3>IR Array Track Following</h3>
     <FloatImage
-      src={'/assets/autonomousVehicle/ir_array.webp'}
-      alt='IR Array'
-      float='left'
+      src="/assets/autonomousVehicle/ir_array.webp"
+      alt="IR Array"
+      float="left"
       caption
     />
     <p>
@@ -124,7 +125,7 @@ const AutonomousVehiclePage = () => {
       <li>Scaled this result to a steering angle.</li>
     </ol>
     <p>Here is the result:</p>
-    <CaptionedVideo src={'/assets/autonomousVehicle/ir_navigation.mp4'} />
+    <CaptionedVideo src="/assets/autonomousVehicle/ir_navigation.mp4" autoPlay />
     <h3>Navigation with Computer Vision</h3>
     <p>
       At this stage in the project, the benches we worked at became teams:
@@ -140,20 +141,37 @@ const AutonomousVehiclePage = () => {
       Now, the signs were to be recognised. At this stage we hadn't yet been introduced to image detection neural networks,
       so laid out was an introductory task that used basic image processing such as finding contours.
       Blurring the images before finding contours and linearly searching for the largest shape bound by the contours distinguished the subject from its background;
-      here were the results:
+      below are three examples (swipeable) of the original image before (top left) and after background removal (bottom left), the determined dominant colour (middle) and some thresholds (right):
     </p>
-    <CaptionedImageRow
-      maxHeight={200}
-      images={[
-        { src: '/assets/autonomousVehicle/blue_apple.webp', alt: 'Blue apple' },
-        { src: '/assets/autonomousVehicle/green_apple.webp', alt: 'Green apple' },
-        { src: '/assets/autonomousVehicle/green_car.webp', alt: 'Green car' },
-      ]}
-      caption="Determining the dominant colour in the image."
-    />
+    <Carousel
+      className="carousel"
+      style={{
+        backgroundColor: window.screen.width >= 600
+          ? "#383a5a"
+          : "#26284d",
+        marginBottom: "1em"
+      }}
+      gap={32}
+    >
+      <FloatImage
+        src="/assets/autonomousVehicle/blue_apple.webp"
+        alt="Blue Apple"
+        maxHeight={400}
+      />
+      <FloatImage
+        src="/assets/autonomousVehicle/green_apple.webp"
+        alt="Green Apple"
+        maxHeight={400}
+      />
+      <FloatImage
+        src="/assets/autonomousVehicle/green_car.webp"
+        alt="Green Car"
+        maxHeight={400}
+      />
+    </Carousel>
     <FloatImage
-      src={'/assets/autonomousVehicle/perspective_transform.webp'}
-      alt='Perspective transform'
+      src="/assets/autonomousVehicle/perspective_transform.webp"
+      alt="Perspective transform"
       float="right"
       caption
     />
@@ -212,7 +230,7 @@ const AutonomousVehiclePage = () => {
     </p>
     <h3>Maze Navigation</h3>
     <FloatImage
-      src={'/assets/autonomousVehicle/keypad.webp'}
+      src="/assets/autonomousVehicle/keypad.webp"
       alt="Keypad"
       float="left"
       caption

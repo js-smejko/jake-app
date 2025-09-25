@@ -1,9 +1,9 @@
 import ProjectPreview from "../components/ProjectPreview";
-import { MAIN_NAVIGATION_PARAMS } from "../constants";
+import { MAIN_NAVIGATION_PARAMS } from "../util/constants";
 
 const ProjectsPage = () => {
   const projects = MAIN_NAVIGATION_PARAMS.find(param =>
-    param.link.title === "Projects"
+    param.link.title === 'Projects'
   )?.subLinks as { title: string; link: string; img: string; }[] | undefined;
 
   if (!projects) return null;

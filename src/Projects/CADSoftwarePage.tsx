@@ -1,6 +1,6 @@
 import CaptionedImageRow from "../components/captionedFootage/CaptionedImageRow";
 import CaptionedVideo from "../components/captionedFootage/CaptionedVideo";
-import FloatImage from "../components/FloatImage";
+import FloatImage from "../components/captionedFootage/FloatImage";
 
 const CADSoftwarePage = () => {
   return <>
@@ -33,7 +33,7 @@ const CADSoftwarePage = () => {
       meaning both folders would be loaded, before the chunkier components were associated with their corresponding level in the logical tree of directories/files.
     </p>
     <FloatImage
-      src='/assets/CADSoftware/tree_view.webp'
+      src="/assets/CADSoftware/tree_view.webp"
       alt="Logical tree of directories and files"
       caption='The logical tree of directories and files - the parent, Cooling, also holds STL: "21-J-900-01_ASSY - COOLING.stl"'
     />
@@ -73,6 +73,7 @@ const CADSoftwarePage = () => {
     <CaptionedVideo
       src="/assets/CADSoftware/stl_video.mp4"
       caption="A demonstration of the dynamic level of detail. The number of detailed entities is set to 1 here."
+      autoPlay
     />
   </>;
 };

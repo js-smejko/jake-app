@@ -1,5 +1,5 @@
 import DocumentLinkPreview from "../components/DocumentLinkPreview";
-import { MAIN_NAVIGATION_PARAMS } from "../constants";
+import { MAIN_NAVIGATION_PARAMS } from "../util/constants";
 
 const DocumentsPage = () => {
   const documents = MAIN_NAVIGATION_PARAMS.find(param =>

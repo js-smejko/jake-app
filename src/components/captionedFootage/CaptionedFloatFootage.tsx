@@ -1,21 +1,13 @@
 import { useEffect, useRef, useState } from "react";
+import type { CaptionedFloatFootageProps } from "./captionedFootage.interfaces";
 
-interface FloatImageProps {
-  src: string;
-  alt: string;
-  caption?: string | boolean;
-  float?: 'left' | 'right';
-  maxHeight?: number;
-}
-
-const FloatImage = ({
-  src,
+const CaptionedFloatFootage = ({
+  children,
   alt,
   caption,
   float,
-  maxHeight = 200
-}: FloatImageProps) => {
-  const localRef = useRef<HTMLSpanElement>(null);
+}: CaptionedFloatFootageProps) => {
+  const localRef = useRef<HTMLDivElement>(null);
   const [shouldClear, setShouldClear] = useState(false);
 
   const adjustClear = () => {
@@ -31,7 +23,6 @@ const FloatImage = ({
   };
 
   useEffect(() => {
-    adjustClear();
     window.addEventListener('resize', adjustClear);
     return () => window.removeEventListener('resize', adjustClear);
   }, []);
@@ -42,26 +33,17 @@ const FloatImage = ({
 
   return (
     <>
-      <span ref={localRef} className={className}>
-        <img
-          src={src}
-          alt={alt}
-          style={{
-            maxHeight,
-            maxWidth: '100%',
-            objectFit: 'contain',
-          }}
-          draggable={false}
-        />
+      <figure ref={localRef} className={className}>
+        {children}
         {caption && (
-          <i className="caption">
+          <figcaption className="caption">
             {typeof caption === 'string' ? caption : alt}
-          </i>
+          </figcaption>
         )}
-      </span>
+      </figure>
       {shouldClear && <div style={{ clear: 'both' }} />}
     </>
   );
 };
 
-export default FloatImage;
+export default CaptionedFloatFootage;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import type { ImageProps } from "../../util/interfaces";
+import type { ImageProps } from "./captionedFootage.interfaces";
 
-import classes from "./footageFrames.module.css";
+import classes from "./captionedFootage.module.css";
 
 interface ImageData extends ImageProps {
   aspect: number;
@@ -65,6 +65,7 @@ const CaptionedImageRow = ({ images, caption, maxHeight }: CaptionedImageProps) 
               style={{
                 maxHeight: maxHeight ? `${maxHeight}px` : 'none',
               }}
+              loading="lazy"
             />
             {img.caption && (
               <figcaption className={classes.caption}>

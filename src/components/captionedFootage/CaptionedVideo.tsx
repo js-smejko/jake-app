@@ -1,36 +1,31 @@
 import { forwardRef } from "react";
-import styles from "./footageFrames.module.css";
+import CaptionedFloatFootage from "./CaptionedFloatFootage";
 
 interface CaptionedVideoProps {
   src: string;
   maxHeight?: number | string;
   caption?: string;
-  onLoad?: () => void;
+  autoPlay?: boolean;
+  float?: 'left' | 'right';
 };
 
 const CaptionedVideo = forwardRef<HTMLVideoElement, CaptionedVideoProps>((
-  { src, maxHeight, caption, onLoad },
+  { src, maxHeight, caption, autoPlay, float },
   ref
 ) => {
   return (
-    <figure>
-      <div className={styles.wrapper}>
-        <video
-          ref={ref}
-          src={src}
-          style={{ maxHeight, maxWidth: '100%' }}
-          playsInline
-          autoPlay
-          controls
-          muted
-          loop
-          onLoadedData={onLoad}
-        />
-      </div>
-      <figcaption>
-        <i className="caption">{caption}</i>
-      </figcaption>
-    </figure>
+    <CaptionedFloatFootage caption={caption} float={float}>
+      <video
+        ref={ref}
+        src={src}
+        style={{ maxHeight, maxWidth: '100%' }}
+        autoPlay={autoPlay}
+        playsInline
+        controls
+        muted
+        loop
+      />
+    </CaptionedFloatFootage>
   )
 });
 

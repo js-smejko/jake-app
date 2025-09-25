@@ -1,4 +1,4 @@
-import FloatImage from "../components/FloatImage";
+import FloatImage from "../components/captionedFootage/FloatImage";
 import HighlightsCarousel from "../components/HighlightsCarousel";
 import { Link } from "react-router-dom";
 
@@ -17,7 +17,7 @@ const HomePage = () => {
         float="left"
       />
       <p>
-        My name is Jake Smejko and this website is a portfolio of my projects and skills from a first person, relatively colloquial perspective.
+        My name is Jake Smejko and this website is a portfolio of my projects and skills.
         I graduated from the University of Nottingham on the 29<sup>th</sup> of July, 2025 in Electrical and Computer Engineering,
         which posed challenges that sent some of my colleagues into despair but thankfully only served to grow my interest. <Link to="about">Find out more about me here...</Link>
       </p>

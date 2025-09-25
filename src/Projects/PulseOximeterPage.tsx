@@ -1,4 +1,4 @@
-import FloatImage from '../components/FloatImage';
+import FloatImage from '../components/captionedFootage/FloatImage';
 
 const PulseOximeterPage = () => {
   return <>
@@ -6,7 +6,7 @@ const PulseOximeterPage = () => {
     <i>The University of Nottingham's 2<sup>nd</sup> year project in 2023</i>
     <h3>Overview</h3>
     <FloatImage
-      src={"/assets/pulseOximeter/banner_from_moodle.webp"}
+      src="/assets/pulseOximeter/banner_from_moodle.webp"
       alt="Pulse Oximeter Banner from Moodle"
       caption="An outline of the project gathered from my University's Moodle page"
     />

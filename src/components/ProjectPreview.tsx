@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import FloatImage from "./FloatImage";
+import FloatImage from "./captionedFootage/FloatImage";
 
 interface ProjectPreviewProps {
   src: string;
