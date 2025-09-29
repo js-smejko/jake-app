@@ -1,4 +1,4 @@
-import FloatImage from "./FloatImage";
+import FloatImage from "./captionedFootage/FloatImage";
 
 interface DocumentLinkProps {
   img: string;
@@ -13,7 +13,7 @@ const DocumentLinkPreview = ({ img, alt, links }: DocumentLinkProps) => {
         src={img}
         alt={alt}
       />
-      <ul className="empty-list" style={{ flex: 1, display: "flex", flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <ul className="empty-list" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         {links.map(link => (
           <li key={link.title} style={{ marginBottom: 8 }}>
             <a

@@ -1,21 +1,21 @@
 import SupplementaryMaterialCarousel from "../components/SupplementaryMaterialCarousel";
-import { MAIN_NAVIGATION_PARAMS } from "../constants";
+import { MAIN_NAVIGATION_PARAMS } from "../util/constants";
 
 const DissertationPage = () => {
   const documents = MAIN_NAVIGATION_PARAMS.find(nav =>
-    nav.link.title === "Documents")?.subLinks;
+    nav.link.title === 'Documents')?.subLinks;
 
   const dissertationLink = documents?.find(doc =>
-    doc.title === "Dissertation")?.link;
+    doc.title === 'Dissertation')?.link;
 
   const feedbackLink = documents?.find(doc =>
-    doc.title === "Dissertation Feedback")?.link;
+    doc.title === 'Dissertation Feedback')?.link;
 
   return (
     <div>
       <h2>Dissertation</h2>
       <p style={{ textAlign: 'center' }}>
-        My final year project at the University of Nottingham saw the foundation of a novel system,
+        My final year project at the University of Nottingham saw the foundation of a novel system;
         an idea of Dr. Kevin Webb's which he supervised.
         The project was moderated by Dr. Peter Christopher and I am proud to have been
         <i>"one of the most enthusiastic communicators / advocates for a project [he's] ever seen".</i>
@@ -25,9 +25,9 @@ const DissertationPage = () => {
       </p>
       <h3>Abstract</h3>
       <p>
-        University of Nottingham's developmental genetics department has recently introduced a new vertebrate fish, Danionella cerebrum (DC),
+        University of Nottingham's developmental genetics department recently introduced a new vertebrate fish, Danionella cerebrum (DC),
         however, its breeding habits have proven to be unusually unpredictable. In combat of this, Dr. Rob Wilkinson proposes to identify the behavioural cues exhibited by DC during procreation using AI.
-        This project aims to facilitate this by creating a system to record and catalogue the fish's behaviour.
+        This project aims to facilitate this by creating a system to record and catalogue the fish's behaviour to determine and recreate the stimuli that prompt procreation.
       </p>
       <h3>Supplementary Material</h3>
       <SupplementaryMaterialCarousel />

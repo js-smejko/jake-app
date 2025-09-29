@@ -1,17 +1,22 @@
-import CaptionedImageRow from "./CaptionedImageRow"
-import CaptionedVideo from "./CaptionedVideo"
+import CaptionedImageRow from "./captionedFootage/CaptionedImageRow"
+import CaptionedVideo from "./captionedFootage/CaptionedVideo"
 import Carousel from "./carousel/Carousel"
-import FloatImage from "./FloatImage"
+import FloatImage from "./captionedFootage/FloatImage"
+import { useCarouselAutoplay } from "../util/hooks";
 
 const SupplementaryMaterialCarousel = () => {
+  const { videoRefs, handleSlideChange } = useCarouselAutoplay();
+
   return (
     <Carousel
+      className="carousel"
       style={{
-        padding: "1em",
-        backgroundColor: window.screen.width >= 600 ? "#383a5a" : "#26284d",
-        borderRadius: "8px",
+        backgroundColor: window.screen.width >= 600 
+          ? '#383a5a' 
+          : '#26284d',
       }}
       gap={32}
+      onSlideChange={handleSlideChange}
     >
       <div>
         <h4>1. Surveillance Setup</h4>
@@ -24,8 +29,8 @@ const SupplementaryMaterialCarousel = () => {
         </p>
         <CaptionedImageRow
           images={[
-            { src: "/assets/dissertation/fish_2048.png", alt: "High resolution DC", caption: "2048x2048px" },
-            { src: "/assets/dissertation/fish_640.png", alt: "Low resolution DC", caption: "640x640px" }
+            { src: '/assets/dissertation/fish_2048.png', alt: 'High resolution DC', caption: '2048x2048px' },
+            { src: '/assets/dissertation/fish_640.png', alt: 'Low resolution DC', caption: '640x640px' }
           ]}
           caption="Detail of Danionella cerebrum when capturing at different resolutions: decreased resolution greatly increased the framerate."
           maxHeight={200}
@@ -39,8 +44,8 @@ const SupplementaryMaterialCarousel = () => {
         </p>
         <CaptionedImageRow
           images={[
-            { src: "/assets/dissertation/before_inference.webp", alt: "Before inference" },
-            { src: "/assets/dissertation/inferences.webp", alt: "Inferences" }
+            { src: '/assets/dissertation/before_inference.webp', alt: 'Before inference' },
+            { src: '/assets/dissertation/inferences.webp', alt: 'Inferences' }
           ]}
           maxHeight={640}
           caption="Before and after YOLO inference: fish barely visible to the human eye are pinpointed by the neural network."
@@ -61,13 +66,15 @@ const SupplementaryMaterialCarousel = () => {
           src="/assets/dissertation/implemented_tracker.mp4"
           maxHeight="640px"
           caption="Tracking an LED in 3D - only the image detection model needs adapting for tracking DC instead"
-          controls={false}
+          ref={el => {
+            if (el) videoRefs.set(2, { current: el })
+          }}
         />
       </div>
       <div>
         <h4>4. Coordinate Triangulation</h4>
         <p>
-          To be certain of the 3D positions, calibration was performed using OpenCV functions.
+          To be certain of the 3D positions, calibration was performed using OpenCV, an open source image processing library's functions.
           A bespoke routine was created to receive the UDP camera feeds and offer frames to OpenCV's chessboard corner detection.
           This meant that the technician (me) could wave a chessboard pattern at the cameras to collect calibration data at any time.
           This gathered intrinsic parameters for each camera, which describes the lens distortion and focal length.
@@ -81,9 +88,9 @@ const SupplementaryMaterialCarousel = () => {
         </p>
         <CaptionedImageRow
           images={[
-            { src: "/assets/dissertation/tank.webp", alt: "Tank", caption: true },
-            { src: "/assets/dissertation/uncalibrated_bounds.webp", alt: "Uncalibrated bounds", caption: true },
-            { src: "/assets/dissertation/triangulated_bounds.webp", alt: "Triangulated bounds", caption: true }
+            { src: '/assets/dissertation/tank.webp', alt: 'Tank', caption: true },
+            { src: '/assets/dissertation/uncalibrated_bounds.webp', alt: 'Uncalibrated bounds', caption: true },
+            { src: '/assets/dissertation/triangulated_bounds.webp', alt: 'Triangulated bounds', caption: true }
           ]}
           maxHeight={640}
           caption="Direct pairing of points vs. triangulation of points from independent 2D localisation of an LED in canon orthogonal views.
@@ -95,16 +102,16 @@ const SupplementaryMaterialCarousel = () => {
         <p>
           To eventually digitally review the tracking data was an extremely ambitious goal in the project's timeframe,
           meaning that human intervention was still required, and immediately useful to my stakeholder.
-          As a result, HLS was implemented to allow live and retrospective viewing of the camera feeds.
+          As a result, Apple's HTTP Live Streaming (HLS) protocol was implemented to allow live and retrospective viewing of the camera feeds.
           The video below demonstrates roughly 30 minutes of footage backlog being reviewed, with both cameras focused on a digital clock to show the time.
-          Extension of this backlog simply required a new set of parameters, at the cost of storage space,
-          which is no imposition to the client.
         </p>
         <CaptionedVideo
           src="/assets/dissertation/rewind_demo.mp4"
           maxHeight="640px"
           caption="A demonstration of 30 minutes' surveillance backlog - both cameras are focused on a digital clock"
-          controls={false}
+          ref={el => {
+            if (el) videoRefs.set(4, { current: el })
+          }}
         />
       </div>
       <div>

@@ -1,0 +1,44 @@
+.wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.outer-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inner-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.inner-container figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex-basis: 0;
+}
+
+.inner-container img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.caption {
+  font-size: 13px;
+  color: #929292ff;
+  margin-top: 6px;
+}

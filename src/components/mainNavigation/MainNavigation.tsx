@@ -1,12 +1,12 @@
 import MainNavigationDropdown from "./MainNavigationDropdown";
 import classes from "./MainNavigation.module.css";
-import { MAIN_NAVIGATION_PARAMS } from "../constants";
+import { MAIN_NAVIGATION_PARAMS } from "../../util/constants";
 import { forwardRef } from "react";
 
 const MainNavigation = forwardRef<HTMLDivElement>((_, ref) => {
   return <>
-    <nav ref={ref} className={classes["main-navigation"]}>
-      <ul className={"empty-list " + classes["navigation-list"]}>
+    <nav ref={ref} className={classes['main-navigation']}>
+      <ul className={'empty-list ' + classes['navigation-list']}>
         {MAIN_NAVIGATION_PARAMS.map(({ link, subLinks }, idx) => (
           <li key={link.link} style={{ flex: 1 }}>
             <MainNavigationDropdown

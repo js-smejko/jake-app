@@ -1,9 +1,9 @@
 import DocumentLinkPreview from "../components/DocumentLinkPreview";
-import { MAIN_NAVIGATION_PARAMS } from "../constants";
+import { MAIN_NAVIGATION_PARAMS } from "../util/constants";
 
 const DocumentsPage = () => {
   const documents = MAIN_NAVIGATION_PARAMS.find(param =>
-    param.link.title === "Documents"
+    param.link.title === 'Documents'
   )?.subLinks;
 
   if (!documents) return null;
@@ -16,12 +16,12 @@ const DocumentsPage = () => {
         alt="Fish"
         links={[
           {
-            title: "Dissertation",
-            url: "assets/documents/dissertation.pdf"
+            title: 'Dissertation',
+            url: 'assets/documents/dissertation.pdf'
           },
           {
-            title: "Dissertation Feedback",
-            url: "assets/documents/feedback.pdf"
+            title: 'Dissertation Feedback',
+            url: 'assets/documents/feedback.pdf'
           }
         ]}
       />
@@ -30,12 +30,12 @@ const DocumentsPage = () => {
         alt="My friends and I at the Grad Ball"
         links={[
           {
-            title: "Degree Transcript",
-            url: "assets/documents/degree_transcript.pdf"
+            title: 'Degree Transcript',
+            url: 'assets/documents/degree_transcript.pdf'
           },
           {
-            title: "Degree Certificate",
-            url: "assets/documents/degree_certificate.pdf"
+            title: 'Degree Certificate',
+            url: 'assets/documents/degree_certificate.pdf'
           }
         ]}
       />
@@ -44,8 +44,8 @@ const DocumentsPage = () => {
         alt="Guitar Grade 8 Certificate"
         links={[
           {
-            title: "Guitar Grade 8 Certificate",
-            url: "assets/documents/guitar_grade_8.pdf"
+            title: 'Guitar Grade 8 Certificate',
+            url: 'assets/documents/guitar_grade_8.pdf'
           }
         ]}
       />

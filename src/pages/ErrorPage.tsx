@@ -1,4 +1,4 @@
-import MainNavigation from "../MainNavigation/MainNavigation";
+import MainNavigation from "../components/mainNavigation/MainNavigation";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -30,15 +30,15 @@ const ErrorPage = () => {
     <main
       style={{
         marginTop: top,
-        padding: "0 1rem",
+        padding: '0 1rem',
         maxWidth: Math.max(960, window.innerWidth * 0.75),
       }}
     >
       <h1>404 - Page Not Found</h1>
       <h2>Head <Link to="/">Home</Link></h2>
-      <footer style={{ marginBlock: "1rem" }}>
-        <p style={{ textAlign: "right" }}>Jake Smejko 2025</p>
-        <p style={{ textAlign: "right" }}><a href="mailto:jsmejko@outlook.com">jsmejko@outlook.com</a></p>
+      <footer style={{ marginBlock: '1rem' }}>
+        <p style={{ textAlign: 'right' }}>Jake Smejko 2025</p>
+        <p style={{ textAlign: 'right' }}><a href="mailto:jsmejko@outlook.com">jsmejko@outlook.com</a></p>
       </footer>
     </main>
   </>

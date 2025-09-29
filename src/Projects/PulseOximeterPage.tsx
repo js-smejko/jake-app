@@ -1,4 +1,4 @@
-import FloatImage from '../components/FloatImage';
+import FloatImage from '../components/captionedFootage/FloatImage';
 
 const PulseOximeterPage = () => {
   return <>
@@ -6,7 +6,7 @@ const PulseOximeterPage = () => {
     <i>The University of Nottingham's 2<sup>nd</sup> year project in 2023</i>
     <h3>Overview</h3>
     <FloatImage
-      src={"/assets/pulseOximeter/banner_from_moodle.webp"}
+      src="/assets/pulseOximeter/banner_from_moodle.webp"
       alt="Pulse Oximeter Banner from Moodle"
       caption="An outline of the project gathered from my University's Moodle page"
     />
@@ -23,7 +23,7 @@ const PulseOximeterPage = () => {
     </p>
     <p>
       Teams of four were initially responsible for the analogue processing of the IR receiver's signal,
-      which included a transimpedance amplifier, high-pass and low-pass filters, and a second stage amplifier.
+      which included a transimpedance amplifier, bandpass filtering, and a second stage amplifier.
       This would meet ADC acquisition firmware on a STM32 microcontroller, which met my individual task: to perform a Fast Fourier Transform (FFT).
     </p>
     <h3>Reading Heart Rate</h3>
@@ -31,8 +31,8 @@ const PulseOximeterPage = () => {
       Once our oscilloscope was displaying a clear PPG trace, I had to make design decisions about the FFT binning and sample rate.
       Initially I researched the minimum and maximum reasonable human heart rates:
       The sample rate would use Nyquist's theorem on the maximum possible heart rate and the product of this and the number of bins would meet the time period of the minimum heart rate,
-      which naturally became the time interval between FFT calculations, meaning less bins minimised the latency before the first reading.
-      On the flipside, the resolution of the FFT increased with the number of bins and this was currently &plusmn;30 BPM or so.
+      which naturally became the time interval between FFT calculations.
+      The resolution of the FFT increased with the number of bins and this was initially unacceptable at &plusmn;30 BPM or so.
     </p>
     <p>
       Research led me to pad the samples up to a resolution of &plusmn;0.5 BPM and window them, before excluding the DC component in the FFT and linearly searching for the bin of the highest magnitude.
@@ -43,14 +43,14 @@ const PulseOximeterPage = () => {
     <p>
       7-segment displays would then be driven by a Complex Programmable Logic Device (CPLD) to show the heart rate readings.
       My team was assigned to the create the hardware around my work on the CPLD logic,
-      which I created in Intel Quartus Prime Lite. 
-      I independently designed and simulated a clock divider, control state machine, serial to parallel shift register.
-      Logic was also in work for a BCD to 7-segment decoder, but this remained untested.
+      which I created in Intel's Quartus Prime Lite. 
+      I independently designed and simulated a clock divider, control state machine and serial to parallel shift register.
+      Logic was also in work for decoding from Binary Coded Decimal (BCD) to 7-segment, but this remained untested.
     </p>
     <p>
       Unfortunately, time constraints left the hardware unready and our display never came into fruition.
-      However, I am proud of my work on the CPLD, which was completely new to me at the time.
-      I also don't know of anyone else who overcame the resolution challenges of the FFT readings.
+      However, I am proud of my work on the CPLD, which was a completely new concept to me at the time.
+      I also don't know of anyone else who overcame the resolution challenges when producing FFT readings.
     </p>
   </>
 };

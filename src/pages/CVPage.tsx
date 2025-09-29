@@ -11,23 +11,22 @@ const CVPage = () => {
         Take pride in delivering high-quality work and strive for perfection,
         while remaining flexible and deadline-driven to ensure the best possible outcomes.
       </p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
         <div>
           <h2>University of Nottingham</h2>
           <p>
-            IET Accredited 2:1 BEng qualification in Electrical and Computer Engineering. 
+            IET Accredited 2:1 BEng (hons) qualification in Electrical and Computer Engineering. 
             <Link to="/projects"> Projects</Link> undertaken at university include the development of:
           </p>
           <ul>
             <li>
-              Miniature, <Link to="/projects/autonomous-vehicle">autonomous vehicle</Link> using various electronic sensors including <strong>computer vision</strong> using OpenCV. 
-              A Raspberry Pi prompted an Arduino microcontroller via I2C to actuate differential motors through DAC and steer using servo.
+              Miniature, <Link to="/projects/autonomous-vehicle">autonomous vehicle</Link> capable of self-parking, line following and sign recognition.
             </li>
             <li>
-              <Link to="/projects/pulse-oximeter">pulse oximeter</Link>, implementing amplification, analogue and digital filtering and the Fast Fourier Transform on a <strong>STM32</strong> chip.
+              <Link to="/projects/pulse-oximeter">pulse oximeter</Link>, with working heart-rate monitoring and simulated Complex Programmable Logic Device programs for the decoding of serial, binary coded decimal to seven-segment displays.
             </li>
             <li>
-              <Link to="/projects/cad-software">Computer Aided Design</Link> interface in C++, a group project which I led to enable the viewing of STL files on desktop and Virtual Reality.
+              <Link to="/projects/cad-software">Computer Aided Design</Link> interface, a group project enabling the viewing of stereolithography files on desktop and Virtual Reality in an installable application.
             </li>
           </ul>
           <p>
@@ -36,8 +35,11 @@ const CVPage = () => {
             Jake really sold the project both technically and scientifically”</i> - 
             Dr. P. Christopher.
           </p>
+          <p>
+            See these achievements in action <Link to="/projects">here</Link>.
+          </p>
           <h2>Chellaston Academy</h2>
-          <h3>A-Levels:</h3>
+          <h3>A-Levels (subject - grade):</h3>
           <ul>
             <li>Mathematics - A</li>
             <li>Physics - A</li>

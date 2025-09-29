@@ -1,31 +1,33 @@
 import { useState } from 'react';
-import TabNavigation from './TabNavigation';
-import { MAIN_NAVIGATION_PARAMS } from '../constants';
+import TabNavigation from './tabNavigation/TabNavigation';
+import { MAIN_NAVIGATION_PARAMS } from '../util/constants';
 import DocumentsPage from '../pages/DocumentsPage';
 
 const DocumentsTabs = () => {
   const [activeTab, setActiveTab] = useState<number>(5);
 
   const tabs = MAIN_NAVIGATION_PARAMS.find(section => 
-    section.link.title === "Documents"
+    section.link.title === 'Documents'
   )?.subLinks
 
   if (!tabs) return null;
 
   return (
     <TabNavigation
-      tabs={[...tabs.map(({ title }) => title), "All"]}
+      tabs={[...tabs.map(({ title }) => title), 'All']}
       tabRenderer={(tab, idx) => (
         <button
-          className={"tab" + (activeTab === idx ? " active" : "")}
+          className="tab document-tab"
+          style={{ color: activeTab === idx ? '#646cff' : 'black' }}
           onClick={() => setActiveTab(idx)}
         >
-          <span>{tab}</span>
+          {tab}
         </button>
       )}
+      selectedIdx={activeTab}
     >
         {activeTab >= 0 && tabs && tabs[activeTab] ? (
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
             <iframe
               title={tabs[activeTab]?.title}
               src={tabs[activeTab]?.link}

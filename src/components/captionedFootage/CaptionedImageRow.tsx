@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import type { ImageProps } from "../util/interfaces";
+import type { ImageProps } from "./captionedFootage.interfaces";
 
-const GAP = 10;
+import classes from "./captionedFootage.module.css";
 
 interface ImageData extends ImageProps {
   aspect: number;
@@ -10,7 +10,7 @@ interface ImageData extends ImageProps {
 interface CaptionedImageProps {
   images: ImageProps[];
   caption?: string | boolean;
-  maxHeight?: number; // px height limit (optional)
+  maxHeight?: number;
 }
 
 const CaptionedImageRow = ({ images, caption, maxHeight }: CaptionedImageProps) => {
@@ -48,68 +48,35 @@ const CaptionedImageRow = ({ images, caption, maxHeight }: CaptionedImageProps) 
   if (!ready) return null;
 
   return (
-    <div
-      style={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: GAP,
-          justifyContent: "center",
-          alignItems: "flex-start",
-          width: "100%",
-        }}
-      >
+    <div className={classes['outer-container']}>
+      <div className={classes['inner-container']}>
         {imageData.map((img, i) => (
           <figure
             key={img.src + i}
             style={{
-              margin: 0,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              textAlign: "center",
-              flexGrow: img.aspect,   // proportional to aspect ratio
+              flexGrow: img.aspect,
               flexShrink: img.aspect,
-              flexBasis: 0,           // lets flexGrow decide actual width
             }}
           >
             <img
               src={img.src}
-              alt={img.alt ?? ""}
-              // loading="lazy"
-              // decoding="async"
-              // draggable={false}
+              alt={img.alt ?? ''}
+              draggable={false}
               style={{
-                width: "100%",              // fills flexed width
-                height: "auto",
-                maxHeight: maxHeight ? `${maxHeight}px` : "none",
-                objectFit: "contain",
-                display: "block",
+                maxHeight: maxHeight ? `${maxHeight}px` : 'none',
               }}
+              loading="lazy"
             />
             {img.caption && (
-              <figcaption
-                style={{
-                  fontSize: 12,
-                  color: "#929292ff",
-                  marginTop: 6,
-                }}
-              >
-                {img.caption}
+              <figcaption className={classes.caption}>
+                {typeof img.caption === 'string' ? img.caption : img.caption && img.alt}
               </figcaption>
             )}
           </figure>
         ))}
       </div>
       {caption && (
-        <i style={{ marginTop: 6, fontSize: 13, color: "#929292ff" }}>{caption}</i>
+        <i className={classes.caption}>{caption}</i>
       )}
     </div>
   );

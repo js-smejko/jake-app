@@ -22,10 +22,10 @@ const MainNavigationDropdown = (
   const relativeRef = useRef<HTMLAnchorElement>(null);
 
   const classFn = ({ isActive }: NavLinkRenderProps) =>
-    isActive ? `${classes["link"]} ${classes["active"]}` : classes["link"];
+    isActive ? `${classes['link']} ${classes['active']}` : classes['link'];
 
   const sublinkClassFn = ({ isActive }: NavLinkRenderProps) =>
-    isActive ? `${classes["sublink"]} ${classes["active"]}` : classes["sublink"];
+    isActive ? `${classes['sublink']} ${classes['active']}` : classes['sublink'];
 
   const handleTouch = () => {
     if (isHovered) {
@@ -59,7 +59,7 @@ const MainNavigationDropdown = (
       {isHovered && <div>
         <ul
           onAnimationEnd={handleAnimationEnd}
-          className={`empty-list ${classes["dropdown-list"]} ${shouldClose ? classes["hide"] : ""}`}
+          className={`empty-list ${classes['dropdown-list']} ${shouldClose ? classes['hide'] : ''}`}
           style={{ 
             width: relativeRef.current 
               ? relativeRef.current.clientWidth - (isLast ? 2 : 1) 
@@ -70,7 +70,7 @@ const MainNavigationDropdown = (
             <li key={subLink.link}>
               {subLink.isIndependent ? (
                 <a 
-                  className={classes["link"]}
+                  className={classes['link']}
                   href={subLink.link} 
                   target="_blank" 
                   rel="noopener noreferrer"

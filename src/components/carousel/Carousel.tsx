@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import DotNavigation from "./DotNavigation";
-import classes from "./Carousel.module.css";
+import { circularNext, circularPrev, circularSlice } from "./Carousel.util";
 
 interface CarouselProps {
   children: React.ReactNode[];
@@ -8,22 +8,17 @@ interface CarouselProps {
   style?: React.CSSProperties;
   maxHeight?: number;
   gap?: number;
+  onSlideChange?: (slideIndex: number) => void;
 }
 
-function circularSlice<T>(arr: T[], start: number, length: number): T[] {
-  const result: T[] = [];
-  const n = arr.length;
-
-  let normalizedStart = ((start % n) + n) % n;
-
-  for (let i = 0; i < length; i++) {
-    result.push(arr[(normalizedStart + i) % n]);
-  }
-
-  return result;
-}
-
-const Carousel = ({ children, className, style, maxHeight = 2000, gap = 16 }: CarouselProps) => {
+const Carousel = ({ 
+  children,
+  className, 
+  style, 
+  maxHeight = 2000, 
+  gap = 16,
+  onSlideChange
+}: CarouselProps) => {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -104,21 +99,16 @@ const Carousel = ({ children, className, style, maxHeight = 2000, gap = 16 }: Ca
 
   const handleTransitionEnd = () => {
     setIsTransitionEnabled(false);
-    setCurrentIndex(
-      translateX === 0
-        ? (currentIndex - 1 + keyedChildren.length) % keyedChildren.length
-        : translateX === -slideWidth * 2
-          ? (currentIndex + 1) % keyedChildren.length
-          : currentIndex
-    );
-    setTranslateX(-slideWidth);
-    const videos = absoluteRef.current?.querySelectorAll("video");
-    console.log(videos?.length);
-    videos?.forEach(video => {
-      // video.pause();
-      // video.currentTime = 0;
-      video.play();
+    setCurrentIndex(prev => {
+      const nextIndex = translateX === 0
+      ? circularPrev(prev, keyedChildren.length)
+      : translateX === -slideWidth * 2
+      ? circularNext(prev, keyedChildren.length)
+      : prev;
+      onSlideChange?.(nextIndex);
+      return nextIndex;
     });
+    setTranslateX(-slideWidth);
   };
 
   const handleMouseDown = (e: React.MouseEvent) => handleDragStart(e.clientX);
@@ -127,6 +117,9 @@ const Carousel = ({ children, className, style, maxHeight = 2000, gap = 16 }: Ca
 
   const handleTouchStart = (e: React.TouchEvent) => handleDragStart(e.touches[0].clientX);
   const handleTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length !== 1) {
+      setIsDragging(false);
+    }
     const clientX = e.touches[0].clientX;
     const delta = clientX - startX;
     if (Math.abs(delta) > 10) {
@@ -137,7 +130,7 @@ const Carousel = ({ children, className, style, maxHeight = 2000, gap = 16 }: Ca
   const handleTouchEnd = (e: React.TouchEvent) => handleDragEnd(e.changedTouches[0].clientX);
 
   return (
-    <div 
+    <div
       className={className}
       style={{
         overflow: "hidden",
@@ -154,12 +147,21 @@ const Carousel = ({ children, className, style, maxHeight = 2000, gap = 16 }: Ca
         <div
           ref={absoluteRef}
           style={{
-            display: "flex",
-            position: "absolute",
+            cursor: isDragging ? 'grabbing' : 'grab',
+            display: 'flex',
+            position: 'absolute',
             transform: `translateX(${translateX}px)`,
-            transition: isTransitionEnabled ? "transform 0.3s ease" : "none",
+            transition: isTransitionEnabled ? 'transform 0.3s ease' : 'none',
             gap,
           }}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchEnd}
           onTransitionEnd={handleTransitionEnd}
         >
           {circularSlice(
@@ -170,7 +172,7 @@ const Carousel = ({ children, className, style, maxHeight = 2000, gap = 16 }: Ca
               key={key}
               style={{
                 width,
-                userSelect: "none",
+                userSelect: 'none',
                 minHeight: height
               }}
             >
@@ -178,35 +180,14 @@ const Carousel = ({ children, className, style, maxHeight = 2000, gap = 16 }: Ca
             </div>
           ))}
         </div>
-        <div
-          className={classes["carousel-gesture-overlay"]}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          onTouchCancel={handleTouchEnd}
-        >
-          <button
-            className={classes["carousel-button"]}
-            onClick={() => setCurrentIndex((currentIndex - 1 + keyedChildren.length) % keyedChildren.length)}
-          >
-            &lt;
-          </button>
-          <button
-            className={classes["carousel-button"]}
-            onClick={() => setCurrentIndex((currentIndex + 1) % keyedChildren.length)}
-          >
-            &gt;
-          </button>
-        </div>
       </div>
       <DotNavigation
         numDots={keyedChildren.length}
         currentIndex={currentIndex}
-        onChange={setCurrentIndex}
+        onChange={i => {
+          setCurrentIndex(i);
+          onSlideChange?.(i);
+        }}
       />
     </div>
   );
