@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import DotNavigation from "./DotNavigation";
 import { circularNext, circularPrev, circularSlice } from "./Carousel.util";
+import { RemoveScroll } from "react-remove-scroll";
 
 interface CarouselProps {
   children: React.ReactNode[];
@@ -11,11 +12,11 @@ interface CarouselProps {
   onSlideChange?: (slideIndex: number) => void;
 }
 
-const Carousel = ({ 
+const Carousel = ({
   children,
-  className, 
-  style, 
-  maxHeight = 2000, 
+  className,
+  style,
+  maxHeight = 2000,
   gap = 16,
   onSlideChange
 }: CarouselProps) => {
@@ -23,9 +24,11 @@ const Carousel = ({
   const [height, setHeight] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [startX, setStartX] = useState(0);
+  const [startY, setStartY] = useState(0);
   const [translateX, setTranslateX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [isTransitionEnabled, setIsTransitionEnabled] = useState(false);
+  const [removeScrollBar, setRemoveScrollBar] = useState(false);
 
   const relativeRef = useRef<HTMLDivElement>(null);
   const absoluteRef = useRef<HTMLDivElement>(null);
@@ -85,6 +88,7 @@ const Carousel = ({
   const handleDragEnd = (clientX: number) => {
     if (!isDragging) return;
     setIsDragging(false);
+    setRemoveScrollBar(false);
     setIsTransitionEnabled(true);
 
     const delta = clientX - startX;
@@ -101,10 +105,10 @@ const Carousel = ({
     setIsTransitionEnabled(false);
     setCurrentIndex(prev => {
       const nextIndex = translateX === 0
-      ? circularPrev(prev, keyedChildren.length)
-      : translateX === -slideWidth * 2
-      ? circularNext(prev, keyedChildren.length)
-      : prev;
+        ? circularPrev(prev, keyedChildren.length)
+        : translateX === -slideWidth * 2
+          ? circularNext(prev, keyedChildren.length)
+          : prev;
       onSlideChange?.(nextIndex);
       return nextIndex;
     });
@@ -115,81 +119,94 @@ const Carousel = ({
   const handleMouseMove = (e: React.MouseEvent) => handleDragMove(e.clientX);
   const handleMouseUp = (e: React.MouseEvent) => handleDragEnd(e.clientX);
 
-  const handleTouchStart = (e: React.TouchEvent) => handleDragStart(e.touches[0].clientX);
+  const handleTouchStart = (e: React.TouchEvent) => {
+    handleDragStart(e.touches[0].clientX);
+    setStartY(e.touches[0].clientY);
+  };
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (e.touches.length !== 1) {
-      setIsDragging(false);
-    }
     const clientX = e.touches[0].clientX;
-    const delta = clientX - startX;
-    if (Math.abs(delta) > 10) {
+    if (e.touches.length !== 1) {
+      handleDragEnd(clientX);
+      return;
+    } else if (isDragging) {
       handleDragMove(clientX);
-      e.preventDefault();
+      if (removeScrollBar) return;
+
+      const clientY = e.touches[0].clientY;
+      const deltaX = clientX - startX;
+      const deltaY = clientY - startY;
+      if (Math.abs(deltaX) > 10) {
+        setRemoveScrollBar(true);
+      } else if (Math.abs(deltaY) > 10) {
+        handleDragEnd(clientX);
+      }
     }
   };
   const handleTouchEnd = (e: React.TouchEvent) => handleDragEnd(e.changedTouches[0].clientX);
 
   return (
-    <div
-      className={className}
-      style={{
-        overflow: "hidden",
-        ...style
-      }}
-    >
+    <RemoveScroll enabled={removeScrollBar}>
       <div
-        ref={relativeRef}
+        className={className}
         style={{
-          position: "relative",
-          height
+          overflow: "hidden",
+          ...style
         }}
       >
         <div
-          ref={absoluteRef}
+          ref={relativeRef}
           style={{
-            cursor: isDragging ? 'grabbing' : 'grab',
-            display: 'flex',
-            position: 'absolute',
-            transform: `translateX(${translateX}px)`,
-            transition: isTransitionEnabled ? 'transform 0.3s ease' : 'none',
-            gap,
+            position: "relative",
+            height
           }}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          onTouchCancel={handleTouchEnd}
-          onTransitionEnd={handleTransitionEnd}
         >
-          {circularSlice(
-            keyedChildren,
-            currentIndex - 1, 3
-          ).map(({ child, key }) => (
-            <div
-              key={key}
-              style={{
-                width,
-                userSelect: 'none',
-                minHeight: height
-              }}
-            >
-              {child}
-            </div>
-          ))}
+          <div
+            ref={absoluteRef}
+            style={{
+              cursor: isDragging ? 'grabbing' : 'grab',
+              display: 'flex',
+              position: 'absolute',
+              transform: `translateX(${translateX}px)`,
+              transition: isTransitionEnabled ? 'transform 0.3s ease' : 'none',
+              gap,
+            }}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            onTouchCancel={handleTouchEnd}
+            onTransitionEnd={handleTransitionEnd}
+          >
+            {circularSlice(
+              keyedChildren,
+              currentIndex - 1, 3
+            ).map(({ child, key }) => (
+              <div
+                key={key}
+                style={{
+                  width,
+                  userSelect: 'none',
+                  minHeight: height
+                }}
+              >
+                {child}
+              </div>
+            ))}
+          </div>
         </div>
+        <DotNavigation
+          numDots={keyedChildren.length}
+          currentIndex={currentIndex}
+          onChange={i => {
+            setCurrentIndex(i);
+            onSlideChange?.(i);
+          }}
+        />
       </div>
-      <DotNavigation
-        numDots={keyedChildren.length}
-        currentIndex={currentIndex}
-        onChange={i => {
-          setCurrentIndex(i);
-          onSlideChange?.(i);
-        }}
-      />
-    </div>
+    </RemoveScroll>
   );
 };
 
